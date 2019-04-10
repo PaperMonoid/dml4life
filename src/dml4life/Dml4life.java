@@ -5,6 +5,8 @@
  */
 package dml4life;
 
+import componentes.conector.ConectorVista;
+
 /**
  *
  * @author tritiummonoid
@@ -15,7 +17,7 @@ public class Dml4life {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        new ConectorVista().setVisible(true);
     }
     
 }
