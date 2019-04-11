@@ -26,14 +26,16 @@ public class PrincipalModelo implements IPrincipalModelo {
     }
 
     @Override
-    public List<String> getBasesDeDatos() throws SQLException, 
+    public List<BaseDeDatos> getBasesDeDatos() throws SQLException, 
             IllegalStateException {
         Connection conexion = conector.getConexion();
         Statement comando = conexion.createStatement();
         ResultSet resultados = comando.executeQuery("SHOW DATABASES");
-        List<String> basesDeDatos = new ArrayList<>();
+        List<BaseDeDatos> basesDeDatos = new ArrayList<>();
         while (resultados.next()) {
-            basesDeDatos.add(resultados.getString(1));
+            String nombre = resultados.getString(1);
+            BaseDeDatos baseDeDatos = new BaseDeDatos(conexion, nombre);
+            basesDeDatos.add(baseDeDatos);
         }
         resultados.close();
         comando.close();

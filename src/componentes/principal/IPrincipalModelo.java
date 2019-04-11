@@ -13,5 +13,6 @@ import java.util.List;
  * @author tritiummonoid
  */
 public interface IPrincipalModelo {
-    List<String> getBasesDeDatos() throws SQLException, IllegalStateException;
+    List<BaseDeDatos> getBasesDeDatos() throws SQLException, 
+            IllegalStateException;
 }

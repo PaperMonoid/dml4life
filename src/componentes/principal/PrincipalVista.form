@@ -25,8 +25,8 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="scrollBasesDeDatos" min="-2" pref="215" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="334" max="32767" attributes="0"/>
+              <Component id="scrollBasesDeDatos" min="-2" pref="396" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="404" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

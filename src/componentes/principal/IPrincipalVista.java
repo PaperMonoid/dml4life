@@ -12,7 +12,7 @@ import java.util.List;
  * @author tritiummonoid
  */
 public interface IPrincipalVista {
-    void cambioBasesDeDatos(List<String> basesDeDatos);
+    void cambioBasesDeDatos(List<BaseDeDatos> basesDeDatos);
     void consultaInvalida();
     void conexionFallida();
 }

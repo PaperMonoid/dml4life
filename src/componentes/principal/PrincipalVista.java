@@ -50,8 +50,8 @@ public class PrincipalVista extends javax.swing.JFrame
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 334, Short.MAX_VALUE))
+                .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 404, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -67,11 +67,16 @@ public class PrincipalVista extends javax.swing.JFrame
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void cambioBasesDeDatos(List<String> basesDeDatos) {
+    public void cambioBasesDeDatos(List<BaseDeDatos> basesDeDatos) {
         DefaultMutableTreeNode raiz = 
                 new DefaultMutableTreeNode("Bases de datos");
-        for (String baseDeDatos : basesDeDatos) {
-            raiz.add(new DefaultMutableTreeNode(baseDeDatos));
+        for (BaseDeDatos baseDeDatos : basesDeDatos) {
+            DefaultMutableTreeNode nodo = 
+                    new DefaultMutableTreeNode(baseDeDatos.getNombre());
+            for (Tabla tabla : baseDeDatos.getTablas()) {
+                nodo.add(new DefaultMutableTreeNode(tabla.getNombre()));
+            }
+            raiz.add(nodo);
         }
         DefaultTreeModel modelo = new DefaultTreeModel(raiz);
         treeBasesDeDatos.setModel(modelo);

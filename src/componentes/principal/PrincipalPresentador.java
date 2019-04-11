@@ -24,7 +24,7 @@ public class PrincipalPresentador {
     public void setVista(IPrincipalVista vista) {
         this.vista = vista;
         try {
-            List<String> basesDeDatos = this.modelo.getBasesDeDatos();
+            List<BaseDeDatos> basesDeDatos = this.modelo.getBasesDeDatos();
             this.vista.cambioBasesDeDatos(basesDeDatos);
         } catch(SQLException exception) {
             System.err.println(exception.getMessage());
