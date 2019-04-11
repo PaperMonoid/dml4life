@@ -18,6 +18,7 @@ public class ConectorModelo implements IConectorModelo {
     private String usuario;
     private String clave;
     private String baseDeDatos;
+    private Connection conexion;
     
     public ConectorModelo(String servidor, String usuario, String clave, 
             String baseDeDatos) {
@@ -28,12 +29,20 @@ public class ConectorModelo implements IConectorModelo {
     }
 
     @Override
-    public void conectar() throws Exception {
+    public void conectar() throws SQLException {
         String string = String.format(
                 "jdbc:mysql://%s/%s?user=%s&password=%s&serverTimezone=UTC", 
                 servidor, baseDeDatos, usuario, clave);
-        Connection conn = DriverManager.getConnection(string);
-        conn.close();
+        DriverManager.setLoginTimeout(10);
+        conexion = DriverManager.getConnection(string);
+    }
+    
+    @Override
+    public Connection getConexion() throws IllegalStateException {
+        if (conexion == null) {
+            throw new IllegalStateException("No hay conexión disponible.");
+        }
+        return conexion;
     }
     
 }

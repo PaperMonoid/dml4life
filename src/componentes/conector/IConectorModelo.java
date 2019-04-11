@@ -5,10 +5,14 @@
  */
 package componentes.conector;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  *
  * @author tritiummonoid
  */
 public interface IConectorModelo {
-    void conectar() throws Exception;
+    void conectar() throws SQLException;
+    Connection getConexion() throws IllegalStateException;
 }

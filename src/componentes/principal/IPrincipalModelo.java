@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package componentes.conector;
+package componentes.principal;
 
-import componentes.principal.PrincipalPresentador;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
  * @author tritiummonoid
  */
-public interface IConectorVista {
-    public void conexionExitosa(PrincipalPresentador presentador);
-    public void conexionFallida();
+public interface IPrincipalModelo {
+    List<String> getBasesDeDatos() throws SQLException, IllegalStateException;
 }

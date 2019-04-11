@@ -5,6 +5,8 @@
  */
 package componentes.conector;
 
+import componentes.principal.PrincipalPresentador;
+import componentes.principal.PrincipalVista;
 import javax.swing.JOptionPane;
 
 /**
@@ -139,8 +141,9 @@ public class ConectorVista extends javax.swing.JFrame
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void conexionExitosa() {
+    public void conexionExitosa(PrincipalPresentador presentador) {
         JOptionPane.showMessageDialog(null, "Conexión exitosa.");
+        new PrincipalVista(presentador).setVisible(true);
     }
 
     @Override

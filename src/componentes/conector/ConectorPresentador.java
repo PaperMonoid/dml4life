@@ -5,6 +5,9 @@
  */
 package componentes.conector;
 
+import componentes.principal.PrincipalPresentador;
+import java.sql.SQLException;
+
 /**
  *
  * @author tritiummonoid
@@ -23,9 +26,9 @@ public class ConectorPresentador {
             IConectorModelo modelo = 
                     new ConectorModelo(servidor, usuario, clave, baseDeDatos);
             modelo.conectar();
-            this.vista.conexionExitosa();
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
+            this.vista.conexionExitosa(new PrincipalPresentador(modelo));
+        } catch (SQLException exception) {
+            System.err.println(exception.getMessage());
             this.vista.conexionFallida();
         }
     }
