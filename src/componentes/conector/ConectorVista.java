@@ -24,6 +24,7 @@ public class ConectorVista extends javax.swing.JFrame
     public ConectorVista() {
         this.presentador = new ConectorPresentador(this);
         initComponents();
+        getRootPane().setDefaultButton(btnConectar);
     }
 
     /**
@@ -63,9 +64,9 @@ public class ConectorVista extends javax.swing.JFrame
         txtBaseDeDatos.setName(""); // NOI18N
 
         btnConectar.setText("Conectar");
-        btnConectar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnConectarMouseClicked(evt);
+        btnConectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConectarActionPerformed(evt);
             }
         });
 
@@ -123,10 +124,10 @@ public class ConectorVista extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnConectarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConectarMouseClicked
+    private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
        presentador.conectar(txtServidor.getText(), txtUsuario.getText(), 
                new String(txtClave.getPassword()), txtBaseDeDatos.getText());
-    }//GEN-LAST:event_btnConectarMouseClicked
+    }//GEN-LAST:event_btnConectarActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConectar;
@@ -143,6 +144,7 @@ public class ConectorVista extends javax.swing.JFrame
     @Override
     public void conexionExitosa(PrincipalPresentador presentador) {
         JOptionPane.showMessageDialog(null, "Conexión exitosa.");
+        setVisible(false);
         new PrincipalVista(presentador).setVisible(true);
     }
 
