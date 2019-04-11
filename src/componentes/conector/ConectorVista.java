@@ -38,7 +38,7 @@ public class ConectorVista extends javax.swing.JFrame
         lblUsuario = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
         lblClave = new javax.swing.JLabel();
-        txtClave = new javax.swing.JTextField();
+        txtClave = new javax.swing.JPasswordField();
         lblBaseDeDatos = new javax.swing.JLabel();
         txtBaseDeDatos = new javax.swing.JTextField();
         btnConectar = new javax.swing.JButton();
@@ -83,9 +83,9 @@ public class ConectorVista extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtBaseDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
-                            .addComponent(txtClave)
                             .addComponent(txtUsuario)
-                            .addComponent(txtServidor)))
+                            .addComponent(txtServidor)
+                            .addComponent(txtClave)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnConectar)))
@@ -103,16 +103,16 @@ public class ConectorVista extends javax.swing.JFrame
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblUsuario))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblClave)
                     .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBaseDeDatos)
                     .addComponent(txtBaseDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnConectar)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         txtBaseDeDatos.getAccessibleContext().setAccessibleName("");
@@ -123,7 +123,7 @@ public class ConectorVista extends javax.swing.JFrame
 
     private void btnConectarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConectarMouseClicked
        presentador.conectar(txtServidor.getText(), txtUsuario.getText(), 
-               txtClave.getText(), txtBaseDeDatos.getText());
+               new String(txtClave.getPassword()), txtBaseDeDatos.getText());
     }//GEN-LAST:event_btnConectarMouseClicked
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -133,7 +133,7 @@ public class ConectorVista extends javax.swing.JFrame
     private javax.swing.JLabel lblServidor;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTextField txtBaseDeDatos;
-    private javax.swing.JTextField txtClave;
+    private javax.swing.JPasswordField txtClave;
     private javax.swing.JTextField txtServidor;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables

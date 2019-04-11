@@ -25,6 +25,7 @@ public class ConectorPresentador {
             modelo.conectar();
             this.vista.conexionExitosa();
         } catch (Exception exception) {
+            System.out.println(exception.getMessage());
             this.vista.conexionFallida();
         }
     }

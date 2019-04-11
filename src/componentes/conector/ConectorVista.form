@@ -37,9 +37,9 @@
                       <EmptySpace pref="43" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtBaseDeDatos" pref="238" max="32767" attributes="0"/>
-                          <Component id="txtClave" max="32767" attributes="0"/>
                           <Component id="txtUsuario" max="32767" attributes="0"/>
                           <Component id="txtServidor" max="32767" attributes="0"/>
+                          <Component id="txtClave" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -65,18 +65,18 @@
                   <Component id="lblUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblClave" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtClave" alignment="0" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblClave" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtClave" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblBaseDeDatos" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtBaseDeDatos" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="btnConectar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="23" max="32767" attributes="0"/>
+              <EmptySpace pref="21" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -104,7 +104,7 @@
         <Property name="name" type="java.lang.String" value="" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtClave">
+    <Component class="javax.swing.JPasswordField" name="txtClave">
     </Component>
     <Component class="javax.swing.JLabel" name="lblBaseDeDatos">
       <Properties>
