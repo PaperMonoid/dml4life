@@ -30,8 +30,7 @@ public class BaseDeDatos {
         
         comando = conexion.createStatement();
         resultados = comando.executeQuery(
-                String.format("USE %s", nombre)
-        );
+                String.format("USE %s", nombre));
         resultados.close();
         comando.close();
         

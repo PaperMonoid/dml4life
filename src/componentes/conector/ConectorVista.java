@@ -48,6 +48,7 @@ public class ConectorVista extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Nueva conexión");
+        setLocation(new java.awt.Point(500, 250));
 
         lblServidor.setText("Servidor");
         lblServidor.setName(""); // NOI18N

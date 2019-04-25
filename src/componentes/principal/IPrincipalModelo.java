@@ -7,6 +7,7 @@ package componentes.principal;
 
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,4 +16,8 @@ import java.util.List;
 public interface IPrincipalModelo {
     List<BaseDeDatos> getBasesDeDatos() throws SQLException, 
             IllegalStateException;
+
+    public DefaultTableModel consulta(String ntbla, String bdt);
+
+   
 }

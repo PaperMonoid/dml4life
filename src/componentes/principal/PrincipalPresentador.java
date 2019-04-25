@@ -8,6 +8,7 @@ package componentes.principal;
 import componentes.conector.IConectorModelo;
 import java.sql.SQLException;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -26,6 +27,7 @@ public class PrincipalPresentador {
         try {
             List<BaseDeDatos> basesDeDatos = this.modelo.getBasesDeDatos();
             this.vista.cambioBasesDeDatos(basesDeDatos);
+           
         } catch(SQLException exception) {
             System.err.println(exception.getMessage());
             this.vista.consultaInvalida();
@@ -34,4 +36,11 @@ public class PrincipalPresentador {
             this.vista.conexionFallida();
         }
     }
+   public  DefaultTableModel actualizarTbl(String bddata, String ntabla)
+    {DefaultTableModel vistabala;
+   vistabala= this.modelo.consulta(bddata,ntabla);
+    return vistabala;
+    }
+    
+   
 }
