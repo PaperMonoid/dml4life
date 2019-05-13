@@ -14,13 +14,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
-
-public class PrincipalModelo implements IPrincipalModelo 
-{
+public class PrincipalModelo implements IPrincipalModelo {
 
     private IConectorModelo conector;
 
@@ -30,8 +26,7 @@ public class PrincipalModelo implements IPrincipalModelo
 
     @Override
     public List<BaseDeDatos> getBasesDeDatos() throws SQLException,
-            IllegalStateException 
-    {
+            IllegalStateException {
         Connection conexion = conector.getConexion();
         Statement comando = conexion.createStatement();
         ResultSet resultados = comando.executeQuery("SHOW DATABASES");
@@ -43,41 +38,43 @@ public class PrincipalModelo implements IPrincipalModelo
         }
         resultados.close();
         comando.close();
-        conexion.close();
+
         return basesDeDatos;
     }
 
     @Override
-    public DefaultTableModel consulta(String bdt, String ntbla)
-    {DefaultTableModel modelo = new DefaultTableModel();
-        try {
-            Connection conexion = conector.getConexion();
-            Statement comando;
-            ResultSet resultados;
-            comando = conexion.createStatement();
-            resultados = comando.executeQuery(String.format("USE %s", bdt));
-            comando = conexion.createStatement();
-            resultados = comando.executeQuery(String.format("Select * From %s", ntbla));
-            ResultSetMetaData rsmt = resultados.getMetaData();
-            int col = rsmt.getColumnCount();
-            
-            for (int i = 1; 1 <= col; i++) {
-                modelo.addColumn(rsmt.getColumnLabel(i));
-            }
-            while (resultados.next())
-            {
-                String fila[] = new String[col];
-                for (int j = 0; j < col; j++) 
-                {
-                    fila[j] = resultados.getString(j + 1);
-                    modelo.addRow(fila);
-                }
-            }
-         } 
-        catch (SQLException ex) 
-        {
-           // Logger.getLogger(PrincipalModelo.class.getName()).log(Level.SEVERE, null, ex);
+    public DefaultTableModel consulta(String baseDeDatos, String tabla)
+            throws SQLException {
+        DefaultTableModel modelo = new DefaultTableModel();
+        Connection conexion = conector.getConexion();
+        Statement comando;
+        ResultSet resultados;
+        ResultSetMetaData metadatos;
+
+        comando = conexion.createStatement();
+        comando.execute(String.format("USE %s", baseDeDatos));
+        comando.close();
+
+        comando = conexion.createStatement();
+        resultados = comando.executeQuery(String.format("SELECT * FROM %s", tabla));
+
+        metadatos = resultados.getMetaData();
+        int columnas = metadatos.getColumnCount();
+        for (int i = 1; i < columnas; i++) {
+            modelo.addColumn(metadatos.getColumnLabel(i));
         }
+
+        while (resultados.next()) {
+            String[] fila = new String[columnas];
+            for (int i = 0, j = 1; j < columnas; i++, j++) {
+                fila[i] = resultados.getString(j);
+            }
+            modelo.addRow(fila);
+        }
+
+        resultados.close();
+        comando.close();
+
         return modelo;
-   }
+    }
 }

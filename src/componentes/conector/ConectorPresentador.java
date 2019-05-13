@@ -13,18 +13,18 @@ import java.sql.SQLException;
  * @author tritiummonoid
  */
 public class ConectorPresentador {
-    
+
     private IConectorVista vista;
-    
+
     public ConectorPresentador(IConectorVista vista) {
         this.vista = vista;
     }
-    
-    public void conectar(String servidor, String usuario, String clave, 
+
+    public void conectar(String servidor, String usuario, String clave,
             String baseDeDatos) {
         try {
-            IConectorModelo modelo = 
-                    new ConectorModelo(servidor, usuario, clave, baseDeDatos);
+            IConectorModelo modelo
+                    = new ConectorModelo(servidor, usuario, clave, baseDeDatos);
             modelo.conectar();
             this.vista.conexionExitosa(new PrincipalPresentador(modelo));
         } catch (SQLException exception) {

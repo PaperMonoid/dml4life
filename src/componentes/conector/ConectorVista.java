@@ -13,9 +13,9 @@ import javax.swing.JOptionPane;
  *
  * @author tritiummonoid
  */
-public class ConectorVista extends javax.swing.JFrame 
+public class ConectorVista extends javax.swing.JFrame
         implements IConectorVista {
-    
+
     private ConectorPresentador presentador;
 
     /**
@@ -126,10 +126,10 @@ public class ConectorVista extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
-       presentador.conectar(txtServidor.getText(), txtUsuario.getText(), 
-               new String(txtClave.getPassword()), txtBaseDeDatos.getText());
+        presentador.conectar(txtServidor.getText(), txtUsuario.getText(),
+                new String(txtClave.getPassword()), txtBaseDeDatos.getText());
     }//GEN-LAST:event_btnConectarActionPerformed
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConectar;
     private javax.swing.JLabel lblBaseDeDatos;

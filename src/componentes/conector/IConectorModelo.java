@@ -13,6 +13,8 @@ import java.sql.SQLException;
  * @author tritiummonoid
  */
 public interface IConectorModelo {
+
     void conectar() throws SQLException;
+
     Connection getConexion() throws IllegalStateException;
 }

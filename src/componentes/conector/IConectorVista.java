@@ -12,6 +12,8 @@ import componentes.principal.PrincipalPresentador;
  * @author tritiummonoid
  */
 public interface IConectorVista {
+
     public void conexionExitosa(PrincipalPresentador presentador);
+
     public void conexionFallida();
 }

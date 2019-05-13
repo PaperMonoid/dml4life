@@ -10,6 +10,7 @@ package componentes.principal;
  * @author tritiummonoid
  */
 public class Tabla {
+
     private String nombre;
 
     public String getNombre() {

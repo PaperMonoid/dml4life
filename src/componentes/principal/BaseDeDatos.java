@@ -17,23 +17,23 @@ import java.util.List;
  * @author tritiummonoid
  */
 public class BaseDeDatos {
-    
+
     private String nombre;
     private List<Tabla> tablas;
 
     public BaseDeDatos(Connection conexion, String nombre) throws SQLException {
         this.nombre = nombre;
         this.tablas = new ArrayList<>();
-        
+
         Statement comando;
         ResultSet resultados;
-        
+
         comando = conexion.createStatement();
         resultados = comando.executeQuery(
                 String.format("USE %s", nombre));
         resultados.close();
         comando.close();
-        
+
         comando = conexion.createStatement();
         resultados = comando.executeQuery("SHOW TABLES");
         while (resultados.next()) {

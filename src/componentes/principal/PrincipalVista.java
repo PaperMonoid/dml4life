@@ -19,11 +19,11 @@ import javax.swing.tree.TreePath;
  *
  * @author tritiummonoid
  */
-public class PrincipalVista extends javax.swing.JFrame 
+public class PrincipalVista extends javax.swing.JFrame
         implements IPrincipalVista {
-    
+
     private PrincipalPresentador presentador;
-        
+
     /**
      * Creates new form PrincipalVista
      */
@@ -94,26 +94,20 @@ public class PrincipalVista extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void mostrar(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_mostrar
- DefaultMutableTreeNode nodoSeleccionado;
-nodoSeleccionado=(DefaultMutableTreeNode)treeBasesDeDatos.getLastSelectedPathComponent(); 
-TreeNode BdT;
-BdT=nodoSeleccionado.getParent();
+        DefaultMutableTreeNode nodoSeleccionado;
+        nodoSeleccionado = (DefaultMutableTreeNode) treeBasesDeDatos.getLastSelectedPathComponent();
+        TreeNode BdT;
+        BdT = nodoSeleccionado.getParent();
 
-   //JOptionPane.showMessageDialog(null,BdT.toString());     
-        
-        if(tablas.contains(nodoSeleccionado.toString()))
-    {
-     
-       JOptionPane.showMessageDialog(null,"Ha seleccionado la tabla "+ nodoSeleccionado +" de la base de datos "+BdT);
-       DefaultTableModel modelin;
-       modelin= presentador.actualizarTbl(BdT.toString(), nodoSeleccionado.toString());
-     Tablita.setModel(modelin);
-    }
-else
-{
-  JOptionPane.showMessageDialog(null,"Debe Seleccionar una tabla a cargar");
+        //JOptionPane.showMessageDialog(null,BdT.toString());     
+        if (tablas.contains(nodoSeleccionado.toString())) {
 
-}
+            JOptionPane.showMessageDialog(null, "Ha seleccionado la tabla " + nodoSeleccionado + " de la base de datos " + BdT);
+            presentador.seleccionarTabla(BdT.toString(), nodoSeleccionado.toString());
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe Seleccionar una tabla a cargar");
+
+        }
 
     }//GEN-LAST:event_mostrar
 
@@ -124,17 +118,18 @@ else
     private javax.swing.JTree treeBasesDeDatos;
     // End of variables declaration//GEN-END:variables
 
-    List<String> tablas=new ArrayList<String>();
+    List<String> tablas = new ArrayList<String>();
+
     @Override
     public void cambioBasesDeDatos(List<BaseDeDatos> basesDeDatos) {
-        DefaultMutableTreeNode raiz = 
-                new DefaultMutableTreeNode("Bases de datos");
+        DefaultMutableTreeNode raiz
+                = new DefaultMutableTreeNode("Bases de datos");
         for (BaseDeDatos baseDeDatos : basesDeDatos) {
-            DefaultMutableTreeNode nodo = 
-                    new DefaultMutableTreeNode(baseDeDatos.getNombre());
+            DefaultMutableTreeNode nodo
+                    = new DefaultMutableTreeNode(baseDeDatos.getNombre());
             for (Tabla tabla : baseDeDatos.getTablas()) {
                 nodo.add(new DefaultMutableTreeNode(tabla.getNombre()));
-                tablas.add(tabla.getNombre().toString());
+                tablas.add(tabla.getNombre());
             }
             raiz.add(nodo);
         }
@@ -151,5 +146,10 @@ else
     public void conexionFallida() {
         JOptionPane.showMessageDialog(null, "Conexión fallida.");
     }
-     
+
+    @Override
+    public void cambioTabla(DefaultTableModel tabla) {
+        Tablita.setModel(tabla);
+    }
+
 }

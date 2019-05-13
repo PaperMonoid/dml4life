@@ -6,6 +6,7 @@
 package componentes.principal;
 
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public interface IPrincipalVista {
     void cambioBasesDeDatos(List<BaseDeDatos> basesDeDatos);
+    void cambioTabla(DefaultTableModel tabla);
     void consultaInvalida();
     void conexionFallida();
 }

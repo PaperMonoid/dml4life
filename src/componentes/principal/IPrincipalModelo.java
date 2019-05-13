@@ -14,10 +14,10 @@ import javax.swing.table.DefaultTableModel;
  * @author tritiummonoid
  */
 public interface IPrincipalModelo {
-    List<BaseDeDatos> getBasesDeDatos() throws SQLException, 
+
+    List<BaseDeDatos> getBasesDeDatos() throws SQLException,
             IllegalStateException;
 
-    public DefaultTableModel consulta(String ntbla, String bdt);
+    DefaultTableModel consulta(String ntbla, String bdt) throws SQLException;
 
-   
 }
