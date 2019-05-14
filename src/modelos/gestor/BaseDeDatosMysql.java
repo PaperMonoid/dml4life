@@ -3,55 +3,57 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package componentes.principal;
+package modelos.gestor;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author tritiummonoid
  */
-public class BaseDeDatos {
+public class BaseDeDatosMysql implements IBaseDeDatos {
 
+    private Connection conexion;
     private String nombre;
-    private List<Tabla> tablas;
-
-    public BaseDeDatos(Connection conexion, String nombre) throws SQLException {
+    private Map<String, ITabla> tablas;
+    
+    public BaseDeDatosMysql(Connection conexion, String nombre) 
+            throws SQLException {
+        this.conexion = conexion;
         this.nombre = nombre;
-        this.tablas = new ArrayList<>();
+        this.tablas = new HashMap<>();
 
         Statement comando;
         ResultSet resultados;
 
         comando = conexion.createStatement();
-        resultados = comando.executeQuery(
-                String.format("USE %s", nombre));
+        resultados = comando.executeQuery(String.format("USE %s", nombre));
         resultados.close();
         comando.close();
 
         comando = conexion.createStatement();
         resultados = comando.executeQuery("SHOW TABLES");
+        tablas = new HashMap<>();
         while (resultados.next()) {
-            this.tablas.add(new Tabla(resultados.getString(1)));
+            String tabla = resultados.getString(1);
+            this.tablas.put(tabla, new TablaMysql(conexion, nombre, tabla));
         }
         resultados.close();
         comando.close();
     }
 
+    @Override
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public List<Tabla> getTablas() {
-        return tablas;
+    @Override
+    public Map<String, ITabla> getTablas() {
+        return this.tablas;
     }
 }

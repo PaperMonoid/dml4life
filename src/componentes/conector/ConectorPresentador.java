@@ -6,7 +6,8 @@
 package componentes.conector;
 
 import componentes.principal.PrincipalPresentador;
-import java.sql.SQLException;
+import modelos.gestor.GestorFactory;
+import modelos.gestor.IGestor;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.sql.SQLException;
  */
 public class ConectorPresentador {
 
-    private IConectorVista vista;
+    private final IConectorVista vista;
 
     public ConectorPresentador(IConectorVista vista) {
         this.vista = vista;
@@ -23,12 +24,11 @@ public class ConectorPresentador {
     public void conectar(String servidor, String usuario, String clave,
             String baseDeDatos) {
         try {
-            IConectorModelo modelo
-                    = new ConectorModelo(servidor, usuario, clave, baseDeDatos);
-            modelo.conectar();
-            this.vista.conexionExitosa(new PrincipalPresentador(modelo));
-        } catch (SQLException exception) {
-            System.err.println(exception.getMessage());
+            IGestor gestor = new GestorFactory()
+                    .create("MySQL", servidor, usuario, clave, baseDeDatos);
+            this.vista.conexionExitosa(new PrincipalPresentador(gestor));
+        } catch (Exception exception) {
+            exception.printStackTrace();
             this.vista.conexionFallida();
         }
     }

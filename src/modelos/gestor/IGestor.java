@@ -3,18 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package componentes.conector;
+package modelos.gestor;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.Map;
 
 /**
  *
  * @author tritiummonoid
  */
-public interface IConectorModelo {
-
-    void conectar() throws SQLException;
-
-    Connection getConexion() throws IllegalStateException;
+public interface IGestor {
+    Map<String, IBaseDeDatos> getBasesDeDatos();
 }

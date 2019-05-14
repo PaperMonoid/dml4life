@@ -5,10 +5,14 @@
  */
 package componentes.principal;
 
-import componentes.conector.IConectorModelo;
 import java.sql.SQLException;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import modelos.gestor.IBaseDeDatos;
+import modelos.gestor.IGestor;
+import modelos.gestor.ITabla;
 
 /**
  *
@@ -17,33 +21,44 @@ import javax.swing.table.DefaultTableModel;
 public class PrincipalPresentador {
 
     private IPrincipalVista vista;
-    private IPrincipalModelo modelo;
+    private IGestor gestor;
 
-    public PrincipalPresentador(IConectorModelo modelo) {
-        this.modelo = new PrincipalModelo(modelo);
+    public PrincipalPresentador(IGestor gestor) {
+        this.gestor = gestor;
     }
 
     public void setVista(IPrincipalVista vista) {
         this.vista = vista;
         try {
-            List<BaseDeDatos> basesDeDatos = this.modelo.getBasesDeDatos();
-            this.vista.cambioBasesDeDatos(basesDeDatos);
+            DefaultMutableTreeNode raiz = 
+                    new DefaultMutableTreeNode("Bases de datos");
+            for (IBaseDeDatos baseDeDatos : gestor.getBasesDeDatos().values()) {
+                DefaultMutableTreeNode nodoBaseDeDatos = 
+                        new DefaultMutableTreeNode(baseDeDatos.getNombre());
+                raiz.add(nodoBaseDeDatos);
+                for (ITabla tabla: baseDeDatos.getTablas().values()) {
+                    DefaultMutableTreeNode nodoTabla = 
+                            new DefaultMutableTreeNode(tabla.getNombre());
+                    nodoBaseDeDatos.add(nodoTabla);
+                }
+            }
+            DefaultTreeModel modelo = new DefaultTreeModel(raiz);
+            this.vista.cambioBasesDeDatos(modelo);
 
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-            this.vista.consultaInvalida();
-        } catch (IllegalStateException exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.conexionFallida();
         }
     }
 
-    public void seleccionarTabla(String bddata, String ntabla) {
+    public void seleccionarTabla(String baseDeDatos, String tabla) {
         try {
-            DefaultTableModel vistabala;
-            vistabala = this.modelo.consulta(bddata, ntabla);
-            this.vista.cambioTabla(vistabala);
-        } catch (SQLException exception) {
+            TableModel modelo = this.gestor
+                    .getBasesDeDatos().get(baseDeDatos)
+                    .getTablas().get(tabla)
+                    .consultar();
+            this.vista.cambioTabla(modelo);
+        } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.consultaInvalida();
         }

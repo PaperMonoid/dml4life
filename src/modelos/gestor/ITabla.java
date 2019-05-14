@@ -3,18 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package componentes.principal;
+package modelos.gestor;
 
 import javax.swing.table.TableModel;
-import javax.swing.tree.TreeModel;
 
 /**
  *
  * @author tritiummonoid
  */
-public interface IPrincipalVista {
-    void cambioBasesDeDatos(TreeModel modelo);
-    void cambioTabla(TableModel modelo);
-    void consultaInvalida();
-    void conexionFallida();
+public interface ITabla {
+    String getNombre();
+    TableModel consultar() throws Exception;
 }

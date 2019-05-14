@@ -3,50 +3,39 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package componentes.principal;
+package modelos.gestor;
 
-import componentes.conector.IConectorModelo;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
-public class PrincipalModelo implements IPrincipalModelo {
+/**
+ *
+ * @author tritiummonoid
+ */
+public class TablaMysql implements ITabla {
 
-    private IConectorModelo conector;
+    private Connection conexion;
+    private String baseDeDatos;
+    private String nombre;
 
-    public PrincipalModelo(IConectorModelo conector) {
-        this.conector = conector;
+    public TablaMysql(Connection conexion, String baseDeDatos, String nombre) {
+        this.conexion = conexion;
+        this.baseDeDatos = baseDeDatos;
+        this.nombre = nombre;
     }
 
     @Override
-    public List<BaseDeDatos> getBasesDeDatos() throws SQLException,
-            IllegalStateException {
-        Connection conexion = conector.getConexion();
-        Statement comando = conexion.createStatement();
-        ResultSet resultados = comando.executeQuery("SHOW DATABASES");
-        List<BaseDeDatos> basesDeDatos = new ArrayList<>();
-        while (resultados.next()) {
-            String nombre = resultados.getString(1);
-            BaseDeDatos baseDeDatos = new BaseDeDatos(conexion, nombre);
-            basesDeDatos.add(baseDeDatos);
-        }
-        resultados.close();
-        comando.close();
-
-        return basesDeDatos;
+    public String getNombre() {
+        return this.nombre;
     }
 
     @Override
-    public DefaultTableModel consulta(String baseDeDatos, String tabla)
-            throws SQLException {
+    public TableModel consultar() throws Exception {
         DefaultTableModel modelo = new DefaultTableModel();
-        Connection conexion = conector.getConexion();
         Statement comando;
         ResultSet resultados;
         ResultSetMetaData metadatos;
@@ -56,7 +45,9 @@ public class PrincipalModelo implements IPrincipalModelo {
         comando.close();
 
         comando = conexion.createStatement();
-        resultados = comando.executeQuery(String.format("SELECT * FROM %s", tabla));
+        resultados = comando.executeQuery(
+            String.format("SELECT * FROM %s", nombre)
+        );
 
         metadatos = resultados.getMetaData();
         int columnas = metadatos.getColumnCount();

@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
@@ -100,14 +101,12 @@ public class PrincipalVista extends javax.swing.JFrame
         BdT = nodoSeleccionado.getParent();
 
         //JOptionPane.showMessageDialog(null,BdT.toString());     
-        if (tablas.contains(nodoSeleccionado.toString())) {
-
-            JOptionPane.showMessageDialog(null, "Ha seleccionado la tabla " + nodoSeleccionado + " de la base de datos " + BdT);
-            presentador.seleccionarTabla(BdT.toString(), nodoSeleccionado.toString());
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe Seleccionar una tabla a cargar");
-
-        }
+        //if (tablas.contains(nodoSeleccionado.toString())) {
+        JOptionPane.showMessageDialog(null, "Ha seleccionado la tabla " + nodoSeleccionado + " de la base de datos " + BdT);
+        presentador.seleccionarTabla(BdT.toString(), nodoSeleccionado.toString());
+        //} else {
+        //    JOptionPane.showMessageDialog(null, "Debe Seleccionar una tabla a cargar");
+        //}
 
     }//GEN-LAST:event_mostrar
 
@@ -118,22 +117,8 @@ public class PrincipalVista extends javax.swing.JFrame
     private javax.swing.JTree treeBasesDeDatos;
     // End of variables declaration//GEN-END:variables
 
-    List<String> tablas = new ArrayList<String>();
-
     @Override
-    public void cambioBasesDeDatos(List<BaseDeDatos> basesDeDatos) {
-        DefaultMutableTreeNode raiz
-                = new DefaultMutableTreeNode("Bases de datos");
-        for (BaseDeDatos baseDeDatos : basesDeDatos) {
-            DefaultMutableTreeNode nodo
-                    = new DefaultMutableTreeNode(baseDeDatos.getNombre());
-            for (Tabla tabla : baseDeDatos.getTablas()) {
-                nodo.add(new DefaultMutableTreeNode(tabla.getNombre()));
-                tablas.add(tabla.getNombre());
-            }
-            raiz.add(nodo);
-        }
-        DefaultTreeModel modelo = new DefaultTreeModel(raiz);
+    public void cambioBasesDeDatos(TreeModel modelo) {
         treeBasesDeDatos.setModel(modelo);
     }
 
@@ -148,7 +133,7 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
-    public void cambioTabla(DefaultTableModel tabla) {
+    public void cambioTabla(TableModel tabla) {
         Tablita.setModel(tabla);
     }
 
