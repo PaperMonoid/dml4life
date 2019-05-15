@@ -5,16 +5,14 @@
  */
 package componentes.principal;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JTree;
 import javax.swing.table.TableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 /**
  *
@@ -23,15 +21,28 @@ import javax.swing.tree.TreePath;
 public class PrincipalVista extends javax.swing.JFrame
         implements IPrincipalVista {
 
-    private PrincipalPresentador presentador;
+    private final PrincipalPresentador presentador;
 
     /**
      * Creates new form PrincipalVista
+     * @param presentador
      */
     public PrincipalVista(PrincipalPresentador presentador) {
         initComponents();
         this.presentador = presentador;
         presentador.setVista(this);
+        
+        DefaultTreeCellRenderer renderer;
+        renderer = (DefaultTreeCellRenderer) treeBasesDeDatos.getCellRenderer();
+        Icon closedIcon = new ImageIcon("src/resources/db-icon.png");
+        Icon openIcon = new ImageIcon("src/resources/db-icon.png");
+        Icon leafIcon = new ImageIcon("src/resources/table-icon.png");
+        renderer.setClosedIcon(closedIcon);
+        renderer.setOpenIcon(openIcon);
+        renderer.setLeafIcon(leafIcon);
+        
+        treeBasesDeDatos.getSelectionModel()
+                .setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     }
 
     /**
@@ -46,7 +57,8 @@ public class PrincipalVista extends javax.swing.JFrame
         scrollBasesDeDatos = new javax.swing.JScrollPane();
         treeBasesDeDatos = new javax.swing.JTree();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Tablita = new javax.swing.JTable();
+        tblConsulta = new javax.swing.JTable();
+        lblTabla = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("dml4life");
@@ -59,7 +71,7 @@ public class PrincipalVista extends javax.swing.JFrame
         });
         scrollBasesDeDatos.setViewportView(treeBasesDeDatos);
 
-        Tablita.setModel(new javax.swing.table.DefaultTableModel(
+        tblConsulta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -70,50 +82,55 @@ public class PrincipalVista extends javax.swing.JFrame
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        Tablita.setName("Tablita"); // NOI18N
-        jScrollPane1.setViewportView(Tablita);
+        tblConsulta.setName("tblConsulta"); // NOI18N
+        jScrollPane1.setViewportView(tblConsulta);
+
+        lblTabla.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        lblTabla.setText("Tabla");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 101, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblTabla)
+                        .addGap(0, 455, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(lblTabla)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void mostrar(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_mostrar
-        DefaultMutableTreeNode nodoSeleccionado;
-        nodoSeleccionado = (DefaultMutableTreeNode) treeBasesDeDatos.getLastSelectedPathComponent();
-        TreeNode BdT;
-        BdT = nodoSeleccionado.getParent();
-
-        //JOptionPane.showMessageDialog(null,BdT.toString());     
-        //if (tablas.contains(nodoSeleccionado.toString())) {
-        JOptionPane.showMessageDialog(null, "Ha seleccionado la tabla " + nodoSeleccionado + " de la base de datos " + BdT);
-        presentador.seleccionarTabla(BdT.toString(), nodoSeleccionado.toString());
-        //} else {
-        //    JOptionPane.showMessageDialog(null, "Debe Seleccionar una tabla a cargar");
-        //}
-
+        TreeNode nodo;
+        nodo = (TreeNode) treeBasesDeDatos.getLastSelectedPathComponent();
+        if (nodo != null && nodo.isLeaf()) {
+            TreeNode padre = nodo.getParent();
+            presentador.seleccionarTabla(padre.toString(), nodo.toString());
+        }
     }//GEN-LAST:event_mostrar
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable Tablita;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblTabla;
     private javax.swing.JScrollPane scrollBasesDeDatos;
+    private javax.swing.JTable tblConsulta;
     private javax.swing.JTree treeBasesDeDatos;
     // End of variables declaration//GEN-END:variables
 
@@ -133,8 +150,9 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
-    public void cambioTabla(TableModel tabla) {
-        Tablita.setModel(tabla);
+    public void cambioTabla(String nombre, TableModel tabla) {
+        lblTabla.setText(nombre);
+        tblConsulta.setModel(tabla);
     }
 
 }

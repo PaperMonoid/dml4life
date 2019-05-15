@@ -5,11 +5,9 @@
  */
 package componentes.principal;
 
-import java.sql.SQLException;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
 import modelos.gestor.IBaseDeDatos;
 import modelos.gestor.IGestor;
 import modelos.gestor.ITabla;
@@ -57,7 +55,7 @@ public class PrincipalPresentador {
                     .getBasesDeDatos().get(baseDeDatos)
                     .getTablas().get(tabla)
                     .consultar();
-            this.vista.cambioTabla(modelo);
+            this.vista.cambioTabla(tabla, modelo);
         } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.consultaInvalida();
