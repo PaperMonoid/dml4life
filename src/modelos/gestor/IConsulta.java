@@ -15,4 +15,5 @@ public interface IConsulta {
     IConsulta agregarCampo(String campo);
     IConsulta agregarCampo(String campo, String alias);
     TableModel consultar() throws Exception;
+    TableModel consultar(String comando) throws Exception;
 }

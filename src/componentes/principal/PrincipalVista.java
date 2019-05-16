@@ -5,6 +5,8 @@
  */
 package componentes.principal;
 
+import componentes.conector.ConectorVista;
+import java.awt.event.WindowEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -21,16 +23,14 @@ import javax.swing.tree.TreeSelectionModel;
 public class PrincipalVista extends javax.swing.JFrame
         implements IPrincipalVista {
 
-    private final PrincipalPresentador presentador;
+    private final PrincipalPresentador presentador;    
 
     /**
      * Creates new form PrincipalVista
-     * @param presentador
      */
-    public PrincipalVista(PrincipalPresentador presentador) {
+    public PrincipalVista() {
         initComponents();
-        this.presentador = presentador;
-        presentador.setVista(this);
+        this.presentador = new PrincipalPresentador(this);
         
         DefaultTreeCellRenderer renderer;
         renderer = (DefaultTreeCellRenderer) treeBasesDeDatos.getCellRenderer();
@@ -67,6 +67,7 @@ public class PrincipalVista extends javax.swing.JFrame
         menubar = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         itemConexion = new javax.swing.JMenuItem();
+        itemSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("dml4life");
@@ -107,6 +108,11 @@ public class PrincipalVista extends javax.swing.JFrame
         scrollConsulta.setViewportView(tblConsulta);
 
         btnSql.setText("Aceptar");
+        btnSql.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSqlActionPerformed(evt);
+            }
+        });
 
         menuArchivo.setText("Archivo");
 
@@ -117,6 +123,14 @@ public class PrincipalVista extends javax.swing.JFrame
             }
         });
         menuArchivo.add(itemConexion);
+
+        itemSalir.setText("Salir");
+        itemSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSalirActionPerformed(evt);
+            }
+        });
+        menuArchivo.add(itemSalir);
 
         menubar.add(menuArchivo);
 
@@ -179,12 +193,21 @@ public class PrincipalVista extends javax.swing.JFrame
     }//GEN-LAST:event_mostrar
 
     private void itemConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConexionActionPerformed
-        // TODO add your handling code here:
+        new ConectorVista(presentador).setVisible(true);
     }//GEN-LAST:event_itemConexionActionPerformed
+
+    private void btnSqlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSqlActionPerformed
+        presentador.ejecutarConsulta(this.txtSql.getText());
+    }//GEN-LAST:event_btnSqlActionPerformed
+
+    private void itemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSalirActionPerformed
+        dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_itemSalirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSql;
     private javax.swing.JMenuItem itemConexion;
+    private javax.swing.JMenuItem itemSalir;
     private javax.swing.JLabel lblBaseDeDatos;
     private javax.swing.JLabel lblSql;
     private javax.swing.JLabel lblTabla;
@@ -214,10 +237,19 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
-    public void cambioTabla(String nombreBaseDeDatos, String nombreTabla, String consulta, TableModel tabla) {
-        lblBaseDeDatos.setText(new StringBuilder("[").append(nombreBaseDeDatos).append("]").toString());
+    public void cambioTabla(String nombreBaseDeDatos, String nombreTabla, String consulta) {
+        nombreBaseDeDatos = new StringBuilder("[")
+                .append(nombreBaseDeDatos)
+                .append("]")
+                .toString();
+        lblBaseDeDatos.setText(nombreBaseDeDatos);
         lblTabla.setText(nombreTabla);
         txtSql.setText(consulta);
+        presentador.ejecutarConsulta(txtSql.getText());
+    }
+
+    @Override
+    public void cambioConsulta(TableModel tabla) {
         tblConsulta.setModel(tabla);
     }
 

@@ -16,8 +16,10 @@ import modelos.gestor.IGestor;
 public class ConectorPresentador {
 
     private final IConectorVista vista;
+    private final PrincipalPresentador presentador;
 
-    public ConectorPresentador(IConectorVista vista) {
+    public ConectorPresentador(PrincipalPresentador presentador, IConectorVista vista) {
+        this.presentador = presentador;
         this.vista = vista;
     }
 
@@ -26,7 +28,8 @@ public class ConectorPresentador {
         try {
             IGestor gestor = new GestorFactory()
                     .create("MySQL", servidor, usuario, clave, baseDeDatos);
-            this.vista.conexionExitosa(new PrincipalPresentador(gestor));
+            presentador.setGestor(gestor);
+            this.vista.conexionExitosa();
         } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.conexionFallida();

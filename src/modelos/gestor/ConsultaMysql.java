@@ -98,4 +98,38 @@ public class ConsultaMysql implements IConsulta {
 
         return modelo;
     }
+
+    @Override
+    public TableModel consultar(String sql) throws Exception {
+        DefaultTableModel modelo = new DefaultTableModel();
+        Statement comando;
+        ResultSet resultados;
+        ResultSetMetaData metadatos;
+
+        comando = conexion.createStatement();
+        comando.execute(String.format("USE %s", baseDeDatos));
+        comando.close();
+
+        comando = conexion.createStatement();
+        resultados = comando.executeQuery(sql);
+
+        metadatos = resultados.getMetaData();
+        int columnas = metadatos.getColumnCount();
+        for (int i = 1; i <= columnas; i++) {
+            modelo.addColumn(metadatos.getColumnLabel(i));
+        }
+
+        while (resultados.next()) {
+            String[] fila = new String[columnas];
+            for (int i = 0, j = 1; j <= columnas; i++, j++) {
+                fila[i] = resultados.getString(j);
+            }
+            modelo.addRow(fila);
+        }
+
+        resultados.close();
+        comando.close();
+
+        return modelo;
+    }
 }

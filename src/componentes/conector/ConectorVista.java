@@ -6,25 +6,26 @@
 package componentes.conector;
 
 import componentes.principal.PrincipalPresentador;
-import componentes.principal.PrincipalVista;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author tritiummonoid
  */
-public class ConectorVista extends javax.swing.JFrame
+public class ConectorVista extends javax.swing.JDialog
         implements IConectorVista {
 
     private ConectorPresentador presentador;
 
     /**
      * Creates new form ConectorVista
+     * @param presentador
      */
-    public ConectorVista() {
-        this.presentador = new ConectorPresentador(this);
+    public ConectorVista(PrincipalPresentador presentador) {
         initComponents();
+        setModal(true);
         getRootPane().setDefaultButton(btnConectar);
+        this.presentador = new ConectorPresentador(presentador, this);
     }
 
     /**
@@ -46,9 +47,11 @@ public class ConectorVista extends javax.swing.JFrame
         txtBaseDeDatos = new javax.swing.JTextField();
         btnConectar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nueva conexión");
+        setAlwaysOnTop(true);
         setLocation(new java.awt.Point(500, 250));
+        setResizable(false);
 
         lblServidor.setText("Servidor");
         lblServidor.setName(""); // NOI18N
@@ -143,10 +146,9 @@ public class ConectorVista extends javax.swing.JFrame
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void conexionExitosa(PrincipalPresentador presentador) {
+    public void conexionExitosa() {
         JOptionPane.showMessageDialog(null, "Conexión exitosa.");
         setVisible(false);
-        new PrincipalVista(presentador).setVisible(true);
     }
 
     @Override

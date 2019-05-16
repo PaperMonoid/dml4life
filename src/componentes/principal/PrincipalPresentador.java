@@ -18,15 +18,17 @@ import modelos.gestor.ITabla;
  */
 public class PrincipalPresentador {
 
+    private String baseDeDatos;
+    private String tabla;
     private IPrincipalVista vista;
     private IGestor gestor;
 
-    public PrincipalPresentador(IGestor gestor) {
-        this.gestor = gestor;
-    }
-
-    public void setVista(IPrincipalVista vista) {
+    public PrincipalPresentador(IPrincipalVista vista) {
         this.vista = vista;
+    }
+    
+    public void setGestor(IGestor gestor) {
+        this.gestor = gestor;
         try {
             DefaultMutableTreeNode raiz = 
                     new DefaultMutableTreeNode("Bases de datos");
@@ -51,16 +53,26 @@ public class PrincipalPresentador {
 
     public void seleccionarTabla(String baseDeDatos, String tabla) {
         try {
+            this.baseDeDatos = baseDeDatos;
+            this.tabla = tabla;
             IConsulta consulta = this.gestor
                     .getBasesDeDatos().get(baseDeDatos)
                     .getTablas().get(tabla)
                     .consulta();
-            this.vista.cambioTabla(
-                    baseDeDatos, 
-                    tabla, 
-                    consulta.toString(), 
-                    consulta.consultar()
-            );
+            this.vista.cambioTabla(baseDeDatos, tabla, consulta.toString());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            this.vista.consultaInvalida();
+        }
+    }
+
+    public void ejecutarConsulta(String comando) {
+        try {
+            IConsulta consulta = this.gestor
+                    .getBasesDeDatos().get(baseDeDatos)
+                    .getTablas().get(tabla)
+                    .consulta();
+            this.vista.cambioConsulta(consulta.consultar(comando));
         } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.consultaInvalida();

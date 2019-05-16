@@ -5,7 +5,7 @@
  */
 package dml4life;
 
-import componentes.conector.ConectorVista;
+import componentes.principal.PrincipalVista;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Dml4life {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new ConectorVista().setVisible(true);
+        new PrincipalVista().setVisible(true);
     }
     
 }
