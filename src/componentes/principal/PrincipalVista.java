@@ -56,9 +56,17 @@ public class PrincipalVista extends javax.swing.JFrame
 
         scrollBasesDeDatos = new javax.swing.JScrollPane();
         treeBasesDeDatos = new javax.swing.JTree();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblConsulta = new javax.swing.JTable();
+        lblBaseDeDatos = new javax.swing.JLabel();
         lblTabla = new javax.swing.JLabel();
+        lblSql = new javax.swing.JLabel();
+        scrollSql = new javax.swing.JScrollPane();
+        txtSql = new javax.swing.JTextArea();
+        scrollConsulta = new javax.swing.JScrollPane();
+        tblConsulta = new javax.swing.JTable();
+        btnSql = new javax.swing.JButton();
+        menubar = new javax.swing.JMenuBar();
+        menuArchivo = new javax.swing.JMenu();
+        itemConexion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("dml4life");
@@ -70,6 +78,19 @@ public class PrincipalVista extends javax.swing.JFrame
             }
         });
         scrollBasesDeDatos.setViewportView(treeBasesDeDatos);
+
+        lblBaseDeDatos.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        lblBaseDeDatos.setText("Base de datos");
+
+        lblTabla.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblTabla.setText("Tabla");
+
+        lblSql.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        lblSql.setText("Consulta:");
+
+        txtSql.setColumns(20);
+        txtSql.setRows(5);
+        scrollSql.setViewportView(txtSql);
 
         tblConsulta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -83,34 +104,65 @@ public class PrincipalVista extends javax.swing.JFrame
             }
         ));
         tblConsulta.setName("tblConsulta"); // NOI18N
-        jScrollPane1.setViewportView(tblConsulta);
+        scrollConsulta.setViewportView(tblConsulta);
 
-        lblTabla.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        lblTabla.setText("Tabla");
+        btnSql.setText("Aceptar");
+
+        menuArchivo.setText("Archivo");
+
+        itemConexion.setText("Nueva conexión");
+        itemConexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemConexionActionPerformed(evt);
+            }
+        });
+        menuArchivo.add(itemConexion);
+
+        menubar.add(menuArchivo);
+
+        setJMenuBar(menubar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
+                .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTabla)
-                        .addGap(0, 455, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblBaseDeDatos)
+                            .addComponent(lblTabla)
+                            .addComponent(lblSql))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(scrollSql)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSql)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTabla)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(lblBaseDeDatos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTabla)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblSql)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scrollSql, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSql)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scrollConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -126,12 +178,24 @@ public class PrincipalVista extends javax.swing.JFrame
         }
     }//GEN-LAST:event_mostrar
 
+    private void itemConexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConexionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemConexionActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton btnSql;
+    private javax.swing.JMenuItem itemConexion;
+    private javax.swing.JLabel lblBaseDeDatos;
+    private javax.swing.JLabel lblSql;
     private javax.swing.JLabel lblTabla;
+    private javax.swing.JMenu menuArchivo;
+    private javax.swing.JMenuBar menubar;
     private javax.swing.JScrollPane scrollBasesDeDatos;
+    private javax.swing.JScrollPane scrollConsulta;
+    private javax.swing.JScrollPane scrollSql;
     private javax.swing.JTable tblConsulta;
     private javax.swing.JTree treeBasesDeDatos;
+    private javax.swing.JTextArea txtSql;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -150,8 +214,10 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
-    public void cambioTabla(String nombre, TableModel tabla) {
-        lblTabla.setText(nombre);
+    public void cambioTabla(String nombreBaseDeDatos, String nombreTabla, String consulta, TableModel tabla) {
+        lblBaseDeDatos.setText(new StringBuilder("[").append(nombreBaseDeDatos).append("]").toString());
+        lblTabla.setText(nombreTabla);
+        txtSql.setText(consulta);
         tblConsulta.setModel(tabla);
     }
 

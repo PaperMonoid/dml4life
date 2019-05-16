@@ -5,10 +5,10 @@
  */
 package componentes.principal;
 
-import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelos.gestor.IBaseDeDatos;
+import modelos.gestor.IConsulta;
 import modelos.gestor.IGestor;
 import modelos.gestor.ITabla;
 
@@ -51,11 +51,16 @@ public class PrincipalPresentador {
 
     public void seleccionarTabla(String baseDeDatos, String tabla) {
         try {
-            TableModel modelo = this.gestor
+            IConsulta consulta = this.gestor
                     .getBasesDeDatos().get(baseDeDatos)
                     .getTablas().get(tabla)
-                    .consultar();
-            this.vista.cambioTabla(tabla, modelo);
+                    .consulta();
+            this.vista.cambioTabla(
+                    baseDeDatos, 
+                    tabla, 
+                    consulta.toString(), 
+                    consulta.consultar()
+            );
         } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.consultaInvalida();

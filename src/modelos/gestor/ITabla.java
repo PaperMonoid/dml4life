@@ -5,13 +5,11 @@
  */
 package modelos.gestor;
 
-import javax.swing.table.TableModel;
-
 /**
  *
  * @author tritiummonoid
  */
 public interface ITabla {
     String getNombre();
-    TableModel consultar() throws Exception;
+    IConsulta consulta();
 }
