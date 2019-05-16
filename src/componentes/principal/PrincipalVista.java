@@ -31,6 +31,8 @@ public class PrincipalVista extends javax.swing.JFrame
     public PrincipalVista() {
         initComponents();
         this.presentador = new PrincipalPresentador(this);
+        panelConexion.setVisible(false);
+        panelConsulta.setVisible(false);
         
         DefaultTreeCellRenderer renderer;
         renderer = (DefaultTreeCellRenderer) treeBasesDeDatos.getCellRenderer();
@@ -54,16 +56,18 @@ public class PrincipalVista extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panelConexion = new javax.swing.JPanel();
         scrollBasesDeDatos = new javax.swing.JScrollPane();
         treeBasesDeDatos = new javax.swing.JTree();
+        panelConsulta = new javax.swing.JPanel();
         lblBaseDeDatos = new javax.swing.JLabel();
         lblTabla = new javax.swing.JLabel();
         lblSql = new javax.swing.JLabel();
         scrollSql = new javax.swing.JScrollPane();
         txtSql = new javax.swing.JTextArea();
+        btnSql = new javax.swing.JButton();
         scrollConsulta = new javax.swing.JScrollPane();
         tblConsulta = new javax.swing.JTable();
-        btnSql = new javax.swing.JButton();
         menubar = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         itemConexion = new javax.swing.JMenuItem();
@@ -72,6 +76,7 @@ public class PrincipalVista extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("dml4life");
         setLocation(new java.awt.Point(400, 250));
+        setPreferredSize(new java.awt.Dimension(1000, 450));
 
         treeBasesDeDatos.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
@@ -93,6 +98,13 @@ public class PrincipalVista extends javax.swing.JFrame
         txtSql.setRows(5);
         scrollSql.setViewportView(txtSql);
 
+        btnSql.setText("Aceptar");
+        btnSql.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSqlActionPerformed(evt);
+            }
+        });
+
         tblConsulta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -107,12 +119,60 @@ public class PrincipalVista extends javax.swing.JFrame
         tblConsulta.setName("tblConsulta"); // NOI18N
         scrollConsulta.setViewportView(tblConsulta);
 
-        btnSql.setText("Aceptar");
-        btnSql.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSqlActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout panelConsultaLayout = new javax.swing.GroupLayout(panelConsulta);
+        panelConsulta.setLayout(panelConsultaLayout);
+        panelConsultaLayout.setHorizontalGroup(
+            panelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConsultaLayout.createSequentialGroup()
+                .addGroup(panelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblBaseDeDatos)
+                    .addComponent(lblTabla)
+                    .addComponent(lblSql))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(scrollSql)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConsultaLayout.createSequentialGroup()
+                .addGap(0, 638, Short.MAX_VALUE)
+                .addComponent(btnSql))
+            .addComponent(scrollConsulta)
+        );
+        panelConsultaLayout.setVerticalGroup(
+            panelConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConsultaLayout.createSequentialGroup()
+                .addComponent(lblBaseDeDatos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTabla)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSql)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollSql, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSql)
+                .addGap(8, 8, 8)
+                .addComponent(scrollConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout panelConexionLayout = new javax.swing.GroupLayout(panelConexion);
+        panelConexion.setLayout(panelConexionLayout);
+        panelConexionLayout.setHorizontalGroup(
+            panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConexionLayout.createSequentialGroup()
+                .addGap(251, 251, 251)
+                .addComponent(panelConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelConexionLayout.createSequentialGroup()
+                    .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 911, Short.MAX_VALUE)))
+        );
+        panelConexionLayout.setVerticalGroup(
+            panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConexionLayout.createSequentialGroup()
+                .addComponent(panelConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(panelConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelConexionLayout.createSequentialGroup()
+                    .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
 
         menuArchivo.setText("Archivo");
 
@@ -140,43 +200,16 @@ public class PrincipalVista extends javax.swing.JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblBaseDeDatos)
-                            .addComponent(lblTabla)
-                            .addComponent(lblSql))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrollSql)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSql)))
+                .addComponent(panelConexion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollBasesDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(lblBaseDeDatos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTabla)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblSql)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(scrollSql, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSql)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(scrollConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addComponent(panelConexion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -213,6 +246,8 @@ public class PrincipalVista extends javax.swing.JFrame
     private javax.swing.JLabel lblTabla;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenuBar menubar;
+    private javax.swing.JPanel panelConexion;
+    private javax.swing.JPanel panelConsulta;
     private javax.swing.JScrollPane scrollBasesDeDatos;
     private javax.swing.JScrollPane scrollConsulta;
     private javax.swing.JScrollPane scrollSql;
@@ -224,6 +259,8 @@ public class PrincipalVista extends javax.swing.JFrame
     @Override
     public void cambioBasesDeDatos(TreeModel modelo) {
         treeBasesDeDatos.setModel(modelo);
+        panelConexion.setVisible(true);
+        panelConsulta.setVisible(false);
     }
 
     @Override
@@ -245,12 +282,14 @@ public class PrincipalVista extends javax.swing.JFrame
         lblBaseDeDatos.setText(nombreBaseDeDatos);
         lblTabla.setText(nombreTabla);
         txtSql.setText(consulta);
+        panelConsulta.setVisible(true);
         presentador.ejecutarConsulta(txtSql.getText());
     }
 
     @Override
     public void cambioConsulta(TableModel tabla) {
         tblConsulta.setModel(tabla);
+        panelConsulta.setVisible(true);
     }
 
 }
