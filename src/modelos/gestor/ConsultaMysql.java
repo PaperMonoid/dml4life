@@ -59,9 +59,9 @@ public class ConsultaMysql implements IConsulta {
                 }
             }
         }
-        builder.append("FROM ");
+        builder.append("FROM `");
         builder.append(tabla);
-        builder.append(";");
+        builder.append("`;");
         return builder.toString();
     }
 

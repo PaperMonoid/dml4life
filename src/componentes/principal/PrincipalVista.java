@@ -6,6 +6,7 @@
 package componentes.principal;
 
 import componentes.conector.ConectorVista;
+import componentes.insersion.InsersionVista;
 import java.awt.event.WindowEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -72,6 +73,8 @@ public class PrincipalVista extends javax.swing.JFrame
         menuArchivo = new javax.swing.JMenu();
         itemConexion = new javax.swing.JMenuItem();
         itemSalir = new javax.swing.JMenuItem();
+        menuEditar = new javax.swing.JMenu();
+        itemInsertar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("dml4life");
@@ -194,6 +197,18 @@ public class PrincipalVista extends javax.swing.JFrame
 
         menubar.add(menuArchivo);
 
+        menuEditar.setText("Editar");
+
+        itemInsertar.setText("Insertar");
+        itemInsertar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemInsertarActionPerformed(evt);
+            }
+        });
+        menuEditar.add(itemInsertar);
+
+        menubar.add(menuEditar);
+
         setJMenuBar(menubar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -237,14 +252,20 @@ public class PrincipalVista extends javax.swing.JFrame
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_itemSalirActionPerformed
 
+    private void itemInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemInsertarActionPerformed
+        //new InsersionVista().setVisible(true);
+    }//GEN-LAST:event_itemInsertarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSql;
     private javax.swing.JMenuItem itemConexion;
+    private javax.swing.JMenuItem itemInsertar;
     private javax.swing.JMenuItem itemSalir;
     private javax.swing.JLabel lblBaseDeDatos;
     private javax.swing.JLabel lblSql;
     private javax.swing.JLabel lblTabla;
     private javax.swing.JMenu menuArchivo;
+    private javax.swing.JMenu menuEditar;
     private javax.swing.JMenuBar menubar;
     private javax.swing.JPanel panelConexion;
     private javax.swing.JPanel panelConsulta;

@@ -3,17 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelos.gestor;
-
-import java.util.Map;
+package componentes.insersion;
 
 /**
  *
  * @author tritiummonoid
  */
-public interface ITabla {
-    String getNombre();
-    Map<String, String> getCampos();
-    IInsersion insersion();
-    IConsulta consulta();
+public interface IInsersionVista {
+    void insertar();
 }

@@ -5,15 +5,11 @@
  */
 package modelos.gestor;
 
-import java.util.Map;
-
 /**
  *
  * @author tritiummonoid
  */
-public interface ITabla {
-    String getNombre();
-    Map<String, String> getCampos();
-    IInsersion insersion();
-    IConsulta consulta();
+public interface IInsersion {
+    IInsersion agregarCampo(String campo, String valor);
+    void insertar() throws Exception;
 }
