@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelos.gestor;
+package modelos.gestor.mysql;
 
+import modelos.gestor.generico.IInsersion;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;

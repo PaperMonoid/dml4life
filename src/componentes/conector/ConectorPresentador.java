@@ -7,7 +7,7 @@ package componentes.conector;
 
 import componentes.principal.PrincipalPresentador;
 import modelos.gestor.GestorFactory;
-import modelos.gestor.IGestor;
+import modelos.gestor.generico.IGestor;
 
 /**
  *

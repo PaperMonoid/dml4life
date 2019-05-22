@@ -5,6 +5,9 @@
  */
 package modelos.gestor;
 
+import modelos.gestor.mysql.GestorMysql;
+import modelos.gestor.generico.IGestor;
+
 /**
  *
  * @author tritiummonoid

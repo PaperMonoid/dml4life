@@ -8,7 +8,7 @@ package componentes.insersion;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import modelos.gestor.ITabla;
+import modelos.gestor.generico.ITabla;
 
 /**
  *

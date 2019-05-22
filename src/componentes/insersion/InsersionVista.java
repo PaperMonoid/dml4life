@@ -6,7 +6,7 @@
 package componentes.insersion;
 
 import java.util.HashMap;
-import modelos.gestor.ITabla;
+import modelos.gestor.generico.ITabla;
 
 /**
  *

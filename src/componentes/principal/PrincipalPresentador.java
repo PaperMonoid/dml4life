@@ -7,10 +7,10 @@ package componentes.principal;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import modelos.gestor.IBaseDeDatos;
-import modelos.gestor.IConsulta;
-import modelos.gestor.IGestor;
-import modelos.gestor.ITabla;
+import modelos.gestor.generico.IBaseDeDatos;
+import modelos.gestor.generico.IConsulta;
+import modelos.gestor.generico.IGestor;
+import modelos.gestor.generico.ITabla;
 
 /**
  *

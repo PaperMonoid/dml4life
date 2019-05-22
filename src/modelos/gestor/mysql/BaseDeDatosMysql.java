@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelos.gestor;
+package modelos.gestor.mysql;
 
+import modelos.gestor.mysql.TablaMysql;
+import modelos.gestor.generico.ITabla;
+import modelos.gestor.generico.IBaseDeDatos;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
