@@ -12,7 +12,7 @@ import javax.swing.table.TableModel;
  * @author papermonoid
  */
 public interface IConsulta {
-    IConsulta agregarCampo(String campo) throws Exception;
-    void setComando(String comando) throws Exception;
+    IConsulta agregarCampo(String campo);
+    void setComando(String comando);
     TableModel consultar() throws Exception;
 }

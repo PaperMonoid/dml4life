@@ -13,9 +13,12 @@ import javax.swing.tree.TreeModel;
  * @author tritiummonoid
  */
 public interface IPrincipalVista {
-    void cambioBasesDeDatos(TreeModel modelo);
-    void cambioTabla(String nombreBaseDeDatos, String nombreTabla, String consulta);
-    void cambioConsulta(String consulta, TableModel tabla);
+    void cambioServidor(TreeModel modelo);
+    void cambioTabla(String nombreBaseDeDatos, String nombreTabla, 
+            String consulta);
+    void cambioConsulta(String consulta);
+    void cambioResultado(TableModel tabla);
     void consultaInvalida();
     void conexionFallida();
+    void eliminacionExitosa();
 }

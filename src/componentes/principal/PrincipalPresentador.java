@@ -7,7 +7,6 @@ package componentes.principal;
 
 import java.util.List;
 import java.util.Map;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelos.gestor.generico.IBaseDeDatos;
@@ -48,7 +47,7 @@ public class PrincipalPresentador {
                 }
             }
             DefaultTreeModel modelo = new DefaultTreeModel(raiz);
-            this.vista.cambioBasesDeDatos(modelo);
+            this.vista.cambioServidor(modelo);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -70,9 +69,22 @@ public class PrincipalPresentador {
 
     public void ejecutar(String comando) {
         try {
-            IConsulta consulta = tabla.consulta();
-            consulta.setComando(comando);
-            this.vista.cambioConsulta(consulta.toString(), consulta.consultar());
+            if (comando.toLowerCase().contains("delete")) {
+                IEliminacion eliminacion = tabla.eliminacion();
+                for (String subcomando : comando.split(";\n")) {
+                    eliminacion.setComando(subcomando);
+                    eliminacion.eliminar();
+                }
+                this.vista.eliminacionExitosa();
+                IConsulta consulta = tabla.consulta();
+                this.vista.cambioConsulta(consulta.toString());
+                this.vista.cambioResultado(consulta.consultar());
+            } else {
+                IConsulta consulta = tabla.consulta();
+                consulta.setComando(comando);
+                this.vista.cambioConsulta(consulta.toString());
+                this.vista.cambioResultado(consulta.consultar());
+            }
         } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.consultaInvalida();
@@ -81,20 +93,17 @@ public class PrincipalPresentador {
 
     public void eliminar(List<Map<String, String>> registros) {
         try {
-            String comando = "";
+            StringBuilder comando = new StringBuilder();
             List<ICampo> llavesPrimarias = tabla.getLlavesPrimarias();
             for (Map<String, String> registro : registros) {
                 IEliminacion eliminacion = tabla.eliminacion();
                 for (ICampo llavePrimaria : llavesPrimarias) {
-                    eliminacion.agregarCampo(
-                            llavePrimaria.getNombre(), 
+                    eliminacion.agregarCampo(llavePrimaria, 
                             registro.get(llavePrimaria.getNombre()));
                 }
-                comando += eliminacion.toString();
+                comando.append(eliminacion.toString()).append(";\n");
             }
-            IEliminacion eliminacion = tabla.eliminacion();
-            eliminacion.setComando(comando);
-            this.vista.cambioConsulta(eliminacion.toString(), new DefaultTableModel());
+            this.vista.cambioConsulta(comando.toString());
         } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.consultaInvalida();

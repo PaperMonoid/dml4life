@@ -10,13 +10,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
-import net.sf.jsqlparser.schema.Column;
-import net.sf.jsqlparser.schema.Table;
-import net.sf.jsqlparser.statement.select.Select;
-import net.sf.jsqlparser.util.SelectUtils;
 
 /**
  *
@@ -27,33 +24,45 @@ public class ConsultaMysql implements IConsulta {
     private Connection conexion;
     private String baseDeDatos;
     private String tabla;
-    private Select select;
+    private List<String> campos;
+    private String comando;
 
     public ConsultaMysql(Connection conexion, String baseDeDatos, 
-            String tabla) throws Exception {
+            String tabla) {
         this.conexion = conexion;
         this.baseDeDatos = baseDeDatos;
         this.tabla = tabla;
+        this.campos = new ArrayList<>();
     }
     
     @Override
-    public ConsultaMysql agregarCampo(String campo) throws Exception {
-        if (select == null) {
-            select = SelectUtils.buildSelectFromTableAndExpressions(
-                    new Table(tabla), new Column(campo));
-        } else {
-            SelectUtils.addExpression(select, new Column(campo));
-        }
+    public ConsultaMysql agregarCampo(String campo) {
+        this.campos.add(campo);
         return this;
     }
 
     @Override
     public String toString() {
-        Select select = this.select;
-        if (select == null) {
-            select = SelectUtils.buildSelectFromTable(new Table(tabla));
+        if (this.comando != null) {
+            return this.comando;
         }
-        return select.toString();
+        StringBuilder builder = new StringBuilder("SELECT ");
+        if (campos.isEmpty()) {
+            builder.append("* ");
+        } else {
+            for (int i = 0; i < campos.size(); i++) {
+                builder.append(campos.get(i));
+                if (i + 1 < campos.size()) {
+                    builder.append(", ");
+                } else {
+                    builder.append(" ");
+                }
+            }
+        }
+        builder.append("FROM `");
+        builder.append(tabla);
+        builder.append("`;");
+        return builder.toString();
     }
 
     @Override
@@ -91,7 +100,7 @@ public class ConsultaMysql implements IConsulta {
     }
 
     @Override
-    public void setComando(String comando) throws Exception {
-        select = (Select) CCJSqlParserUtil.parse(comando);
+    public void setComando(String comando) {
+        this.comando = comando;
     }
 }

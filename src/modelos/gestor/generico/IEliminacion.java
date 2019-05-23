@@ -10,7 +10,7 @@ package modelos.gestor.generico;
  * @author papermonoid
  */
 public interface IEliminacion {
-    IEliminacion agregarCampo(String campo, String valor) throws Exception;
-    void setComando(String comando) throws Exception;
+    IEliminacion agregarCampo(ICampo campo, String valor);
+    void setComando(String comando);
     void eliminar() throws Exception;
 }

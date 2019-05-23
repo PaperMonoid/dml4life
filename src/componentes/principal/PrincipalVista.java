@@ -308,7 +308,7 @@ public class PrincipalVista extends javax.swing.JFrame
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void cambioBasesDeDatos(TreeModel modelo) {
+    public void cambioServidor(TreeModel modelo) {
         treeBasesDeDatos.setModel(modelo);
         panelConexion.setVisible(true);
         panelConsulta.setVisible(false);
@@ -325,6 +325,12 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
+    public void eliminacionExitosa() {
+        JOptionPane.showMessageDialog(null, 
+                "Se eliminaron los registros correctamente.");
+    }
+
+    @Override
     public void cambioTabla(String nombreBaseDeDatos, String nombreTabla, 
             String consulta) {
         lblBaseDeDatos.setText(String.format("[%s]", nombreBaseDeDatos));
@@ -335,8 +341,13 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
-    public void cambioConsulta(String consulta, TableModel tabla) {
+    public void cambioConsulta(String consulta) {
         txtSql.setText(consulta);
+        panelConsulta.setVisible(true);
+    }
+
+    @Override
+    public void cambioResultado(TableModel tabla) {
         tblConsulta.setModel(tabla);
         panelConsulta.setVisible(true);
     }
