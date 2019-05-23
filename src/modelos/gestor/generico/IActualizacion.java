@@ -7,10 +7,10 @@ package modelos.gestor.generico;
 
 /**
  *
- * @author tritiummonoid
+ * @author papermonoid
  */
-public interface IInsersion {
-    IInsersion agregarCampo(ICampo campo, String valor);
+public interface IActualizacion {
+    IActualizacion agregarCampo(ICampo campo, String valor);
     void setComando(String comando);
     void insertar() throws Exception;
 }
