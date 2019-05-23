@@ -5,10 +5,15 @@
  */
 package componentes.principal;
 
+import java.util.List;
+import java.util.Map;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import modelos.gestor.generico.IBaseDeDatos;
+import modelos.gestor.generico.ICampo;
 import modelos.gestor.generico.IConsulta;
+import modelos.gestor.generico.IEliminacion;
 import modelos.gestor.generico.IGestor;
 import modelos.gestor.generico.ITabla;
 
@@ -65,9 +70,31 @@ public class PrincipalPresentador {
 
     public void ejecutar(String comando) {
         try {
-            IConsulta consulta = this.tabla.consulta();
+            IConsulta consulta = tabla.consulta();
             consulta.setComando(comando);
-            this.vista.cambioConsulta(consulta.consultar());
+            this.vista.cambioConsulta(consulta.toString(), consulta.consultar());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            this.vista.consultaInvalida();
+        }
+    }
+
+    public void eliminar(List<Map<String, String>> registros) {
+        try {
+            String comando = "";
+            List<ICampo> llavesPrimarias = tabla.getLlavesPrimarias();
+            for (Map<String, String> registro : registros) {
+                IEliminacion eliminacion = tabla.eliminacion();
+                for (ICampo llavePrimaria : llavesPrimarias) {
+                    eliminacion.agregarCampo(
+                            llavePrimaria.getNombre(), 
+                            registro.get(llavePrimaria.getNombre()));
+                }
+                comando += eliminacion.toString();
+            }
+            IEliminacion eliminacion = tabla.eliminacion();
+            eliminacion.setComando(comando);
+            this.vista.cambioConsulta(eliminacion.toString(), new DefaultTableModel());
         } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.consultaInvalida();

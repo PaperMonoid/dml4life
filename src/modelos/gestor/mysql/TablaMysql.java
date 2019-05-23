@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import modelos.gestor.generico.ICampo;
+import modelos.gestor.generico.IEliminacion;
 
 /**
  *
@@ -40,6 +41,11 @@ public class TablaMysql implements ITabla {
     public IInsersion insersion() throws Exception {
         return new InsersionMysql(conexion, baseDeDatos, nombre);
     }
+
+    @Override
+    public IEliminacion eliminacion() throws Exception {
+        return new EliminacionMysql(conexion, baseDeDatos, nombre);
+    }
     
     @Override
     public IConsulta consulta() throws Exception {
@@ -61,9 +67,9 @@ public class TablaMysql implements ITabla {
                 String.format("DESCRIBE `%s`", nombre));
         campos = new ArrayList<>();
         while (resultados.next()) {
-            campos.add(new CampoMysql(resultados.getString(0), 
-                    resultados.getString(1), 
-                    "PRI".equals(resultados.getString(3))));
+            campos.add(new CampoMysql(resultados.getString(1), 
+                    resultados.getString(2), 
+                    "PRI".equals(resultados.getString(4))));
         }
         resultados.close();
         comando.close();
@@ -85,10 +91,10 @@ public class TablaMysql implements ITabla {
                 String.format("DESCRIBE `%s`", this.nombre));
         ICampo campo = null;
         while (resultados.next()) {
-            if (nombre.equals(resultados.getString(0))) {
-                campo = new CampoMysql(resultados.getString(0), 
-                        resultados.getString(1),
-                        "PRI".equals(resultados.getString(3)));
+            if (nombre.equals(resultados.getString(1))) {
+                campo = new CampoMysql(resultados.getString(1), 
+                        resultados.getString(2),
+                        "PRI".equals(resultados.getString(4)));
             }
         }
         resultados.close();
@@ -116,9 +122,9 @@ public class TablaMysql implements ITabla {
                 String.format("DESCRIBE `%s`", nombre));
         campos = new ArrayList<>();
         while (resultados.next()) {
-            if ("PRI".equals(resultados.getString(3))) {
-                campos.add(new CampoMysql(resultados.getString(0), 
-                        resultados.getString(1), true));
+            if ("PRI".equals(resultados.getString(4))) {
+                campos.add(new CampoMysql(resultados.getString(1), 
+                        resultados.getString(2), true));
             }
         }
         resultados.close();

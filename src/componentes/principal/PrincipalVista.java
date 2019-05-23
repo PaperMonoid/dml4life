@@ -8,6 +8,10 @@ package componentes.principal;
 import componentes.conector.ConectorVista;
 import componentes.insersion.InsersionVista;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -75,6 +79,7 @@ public class PrincipalVista extends javax.swing.JFrame
         itemSalir = new javax.swing.JMenuItem();
         menuEditar = new javax.swing.JMenu();
         itemInsertar = new javax.swing.JMenuItem();
+        itemEliminar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("dml4life");
@@ -207,6 +212,14 @@ public class PrincipalVista extends javax.swing.JFrame
         });
         menuEditar.add(itemInsertar);
 
+        itemEliminar.setText("Eliminar");
+        itemEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemEliminarActionPerformed(evt);
+            }
+        });
+        menuEditar.add(itemEliminar);
+
         menubar.add(menuEditar);
 
         setJMenuBar(menubar);
@@ -256,9 +269,26 @@ public class PrincipalVista extends javax.swing.JFrame
         //new InsersionVista().setVisible(true);
     }//GEN-LAST:event_itemInsertarActionPerformed
 
+    private void itemEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEliminarActionPerformed
+        List<Map<String, String>> registros = new ArrayList<>();
+        TableModel modelo = tblConsulta.getModel();
+        int[] filas = tblConsulta.getSelectedRows();
+        for (int fila : filas) {
+            Map<String, String> registro = new HashMap<>();
+            int columnas = modelo.getColumnCount();
+            for (int columna = 0; columna < columnas; columna++) {
+                registro.put(modelo.getColumnName(columna), 
+                        (String) modelo.getValueAt(fila, columna));
+            }
+            registros.add(registro);
+        }
+        presentador.eliminar(registros);
+    }//GEN-LAST:event_itemEliminarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSql;
     private javax.swing.JMenuItem itemConexion;
+    private javax.swing.JMenuItem itemEliminar;
     private javax.swing.JMenuItem itemInsertar;
     private javax.swing.JMenuItem itemSalir;
     private javax.swing.JLabel lblBaseDeDatos;
@@ -305,7 +335,8 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
-    public void cambioConsulta(TableModel tabla) {
+    public void cambioConsulta(String consulta, TableModel tabla) {
+        txtSql.setText(consulta);
         tblConsulta.setModel(tabla);
         panelConsulta.setVisible(true);
     }

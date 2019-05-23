@@ -15,7 +15,7 @@ import javax.swing.tree.TreeModel;
 public interface IPrincipalVista {
     void cambioBasesDeDatos(TreeModel modelo);
     void cambioTabla(String nombreBaseDeDatos, String nombreTabla, String consulta);
-    void cambioConsulta(TableModel tabla);
+    void cambioConsulta(String consulta, TableModel tabla);
     void consultaInvalida();
     void conexionFallida();
 }

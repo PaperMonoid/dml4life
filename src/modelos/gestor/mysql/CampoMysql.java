@@ -16,7 +16,7 @@ public class CampoMysql implements ICampo {
     String nombre;
     boolean llavePrimaria;
     
-    public CampoMysql(String tipo, String nombre, boolean llavePrimaria) {
+    public CampoMysql(String nombre, String tipo, boolean llavePrimaria) {
         this.tipo = tipo;
         this.nombre = nombre;
         this.llavePrimaria = llavePrimaria;
