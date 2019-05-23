@@ -17,11 +17,11 @@ import modelos.gestor.generico.ITabla;
  * @author tritiummonoid
  */
 public class PrincipalPresentador {
-
-    private String baseDeDatos;
-    private String tabla;
+    
     private IPrincipalVista vista;
     private IGestor gestor;
+    private IBaseDeDatos baseDeDatos;
+    private ITabla tabla;
 
     public PrincipalPresentador(IPrincipalVista vista) {
         this.vista = vista;
@@ -32,11 +32,11 @@ public class PrincipalPresentador {
         try {
             DefaultMutableTreeNode raiz = 
                     new DefaultMutableTreeNode("Bases de datos");
-            for (IBaseDeDatos baseDeDatos : gestor.getBasesDeDatos().values()) {
+            for (IBaseDeDatos baseDeDatos : gestor.getBasesDeDatos()) {
                 DefaultMutableTreeNode nodoBaseDeDatos = 
                         new DefaultMutableTreeNode(baseDeDatos.getNombre());
                 raiz.add(nodoBaseDeDatos);
-                for (ITabla tabla: baseDeDatos.getTablas().values()) {
+                for (ITabla tabla: baseDeDatos.getTablas()) {
                     DefaultMutableTreeNode nodoTabla = 
                             new DefaultMutableTreeNode(tabla.getNombre());
                     nodoBaseDeDatos.add(nodoTabla);
@@ -53,12 +53,9 @@ public class PrincipalPresentador {
 
     public void seleccionarTabla(String baseDeDatos, String tabla) {
         try {
-            this.baseDeDatos = baseDeDatos;
-            this.tabla = tabla;
-            IConsulta consulta = this.gestor
-                    .getBasesDeDatos().get(baseDeDatos)
-                    .getTablas().get(tabla)
-                    .consulta();
+            this.baseDeDatos = this.gestor.getBaseDeDatos(baseDeDatos);
+            this.tabla = this.baseDeDatos.getTabla(tabla);
+            IConsulta consulta = this.tabla.consulta();
             this.vista.cambioTabla(baseDeDatos, tabla, consulta.toString());
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -68,10 +65,7 @@ public class PrincipalPresentador {
 
     public void ejecutarConsulta(String comando) {
         try {
-            IConsulta consulta = this.gestor
-                    .getBasesDeDatos().get(baseDeDatos)
-                    .getTablas().get(tabla)
-                    .consulta();
+            IConsulta consulta = this.tabla.consulta();
             this.vista.cambioConsulta(consulta.consultar(comando));
         } catch (Exception exception) {
             exception.printStackTrace();

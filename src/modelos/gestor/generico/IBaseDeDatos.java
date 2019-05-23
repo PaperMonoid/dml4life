@@ -5,7 +5,7 @@
  */
 package modelos.gestor.generico;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  *
@@ -13,5 +13,6 @@ import java.util.Map;
  */
 public interface IBaseDeDatos {
     String getNombre();
-    Map<String, ITabla> getTablas();
+    List<ITabla> getTablas() throws Exception;
+    ITabla getTabla(String nombre) throws Exception;
 }

@@ -5,8 +5,7 @@
  */
 package modelos.gestor.generico;
 
-import modelos.gestor.generico.IConsulta;
-import java.util.Map;
+import java.util.List;
 
 /**
  *
@@ -14,7 +13,9 @@ import java.util.Map;
  */
 public interface ITabla {
     String getNombre();
-    Map<String, String> getCampos();
+    List<ICampo> getCampos() throws Exception;
+    ICampo getCampo(String nombre) throws Exception;
+    List<ICampo> getLlavesPrimarias() throws Exception;
     IInsersion insersion();
     IConsulta consulta();
 }

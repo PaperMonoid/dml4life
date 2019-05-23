@@ -7,7 +7,6 @@ package componentes.insersion;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import modelos.gestor.generico.ITabla;
 
 /**
@@ -24,32 +23,36 @@ public class InsersionPresentador {
     }
     
     public void insertar(Map<String, String> registro) {
-        String sql = "INSERT INTO %s(%s) VALUES(%s)";
-        Map<String, String> campos = tabla.getCampos();
-        Iterator<String> iterador = registro.keySet().iterator();
-        StringBuilder listaCampos = new StringBuilder();
-        StringBuilder listaValores = new StringBuilder();
-        String llave;
-        while (iterador.hasNext()) {
-            llave = iterador.next();
-            System.out.println(campos.get(llave));
-            listaCampos.append(llave);
-            if (campos.get(llave).equals("String")) {
-                listaValores.append("'").append(registro.get(llave)).append("'");
-            } else {
-                listaValores.append(registro.get(llave));
+        try {
+            String sql = "INSERT INTO %s(%s) VALUES(%s)";
+            Iterator<String> iterador = registro.keySet().iterator();
+            StringBuilder listaCampos = new StringBuilder();
+            StringBuilder listaValores = new StringBuilder();
+            String llave;
+            while (iterador.hasNext()) {
+                llave = iterador.next();
+                listaCampos.append(llave);
+                if (tabla.getCampo(llave).getTipo().contains("int")) {
+                    listaValores.append(registro.get(llave));
+                } else {
+                    listaValores.append("'")
+                            .append(registro.get(llave))
+                            .append("'");
+                }
+                if (iterador.hasNext()) {
+                    listaCampos.append(", ");
+                    listaValores.append(", ");
+                }
             }
-            if (iterador.hasNext()) {
-                listaCampos.append(", ");
-                listaValores.append(", ");
-            }
+            sql = String.format(
+                    sql, 
+                    tabla.getNombre(), 
+                    listaCampos.toString(), 
+                    listaValores.toString()
+            );
+            System.out.println(sql);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        sql = String.format(
-                sql, 
-                tabla.getNombre(), 
-                listaCampos.toString(), 
-                listaValores.toString()
-        );
-        System.out.println(sql);
     }
 }

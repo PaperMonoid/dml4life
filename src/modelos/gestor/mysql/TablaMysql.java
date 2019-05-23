@@ -10,12 +10,10 @@ import modelos.gestor.generico.ITabla;
 import modelos.gestor.generico.IConsulta;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
+import modelos.gestor.generico.ICampo;
 
 /**
  *
@@ -26,34 +24,11 @@ public class TablaMysql implements ITabla {
     private Connection conexion;
     private String baseDeDatos;
     private String nombre;
-    private Map<String, String> campos;
 
-    public TablaMysql(Connection conexion, String baseDeDatos, String nombre) throws SQLException {
+    public TablaMysql(Connection conexion, String baseDeDatos, String nombre) {
         this.conexion = conexion;
         this.baseDeDatos = baseDeDatos;
         this.nombre = nombre;
-        this.campos = new HashMap<>();
-        
-        Statement comando;
-        ResultSet resultados;
-        ResultSetMetaData metadatos;
-
-        comando = conexion.createStatement();
-        comando.execute(String.format("USE %s", baseDeDatos));
-        comando.close();
-
-        comando = conexion.createStatement();
-        resultados = comando.executeQuery(String.format("SELECT * FROM `%s`", nombre));
-
-        metadatos = resultados.getMetaData();
-        int columnas = metadatos.getColumnCount();
-        for (int i = 1; i <= columnas; i++) {
-            this.campos.put(metadatos.getColumnLabel(i), metadatos.getColumnTypeName(i));
-        }
-
-        resultados.close();
-        comando.close();
-
     }
 
     @Override
@@ -72,7 +47,83 @@ public class TablaMysql implements ITabla {
     }
 
     @Override
-    public Map<String, String> getCampos() {
-        return this.campos;
+    public List<ICampo> getCampos() throws Exception {
+        List<ICampo> campos;
+        Statement comando;
+        ResultSet resultados;
+
+        comando = conexion.createStatement();
+        comando.execute(String.format("USE `%s`", baseDeDatos));
+        comando.close();
+
+        comando = conexion.createStatement();
+        resultados = comando.executeQuery(
+                String.format("DESCRIBE `%s`", nombre));
+        campos = new ArrayList<>();
+        while (resultados.next()) {
+            campos.add(new CampoMysql(resultados.getString(0), 
+                    resultados.getString(1), 
+                    "PRI".equals(resultados.getString(3))));
+        }
+        resultados.close();
+        comando.close();
+        
+        return campos;
+    }
+
+    @Override
+    public ICampo getCampo(String nombre) throws Exception {
+        Statement comando;
+        ResultSet resultados;
+
+        comando = conexion.createStatement();
+        comando.execute(String.format("USE `%s`", baseDeDatos));
+        comando.close();
+
+        comando = conexion.createStatement();
+        resultados = comando.executeQuery(
+                String.format("DESCRIBE `%s`", this.nombre));
+        ICampo campo = null;
+        while (resultados.next()) {
+            if (nombre.equals(resultados.getString(0))) {
+                campo = new CampoMysql(resultados.getString(0), 
+                        resultados.getString(1),
+                        "PRI".equals(resultados.getString(3)));
+            }
+        }
+        resultados.close();
+        comando.close();
+        
+        if (campo == null) {
+            throw new RuntimeException("No se encontró el campo");
+        }
+        
+        return campo;
+    }
+
+    @Override
+    public List<ICampo> getLlavesPrimarias() throws Exception {
+        List<ICampo> campos;
+        Statement comando;
+        ResultSet resultados;
+
+        comando = conexion.createStatement();
+        comando.execute(String.format("USE `%s`", baseDeDatos));
+        comando.close();
+
+        comando = conexion.createStatement();
+        resultados = comando.executeQuery(
+                String.format("DESCRIBE `%s`", nombre));
+        campos = new ArrayList<>();
+        while (resultados.next()) {
+            if ("PRI".equals(resultados.getString(3))) {
+                campos.add(new CampoMysql(resultados.getString(0), 
+                        resultados.getString(1), true));
+            }
+        }
+        resultados.close();
+        comando.close();
+        
+        return campos;
     }
 }

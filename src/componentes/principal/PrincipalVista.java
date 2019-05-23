@@ -303,7 +303,6 @@ public class PrincipalVista extends javax.swing.JFrame
         lblBaseDeDatos.setText(nombreBaseDeDatos);
         lblTabla.setText(nombreTabla);
         txtSql.setText(consulta);
-        txtSql.requestFocus();
         panelConsulta.setVisible(true);
         presentador.ejecutarConsulta(txtSql.getText());
     }
@@ -312,7 +311,6 @@ public class PrincipalVista extends javax.swing.JFrame
     public void cambioConsulta(TableModel tabla) {
         tblConsulta.setModel(tabla);
         panelConsulta.setVisible(true);
-        txtSql.requestFocus();
     }
 
 }

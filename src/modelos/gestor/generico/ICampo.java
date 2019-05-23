@@ -5,14 +5,12 @@
  */
 package modelos.gestor.generico;
 
-import java.util.List;
-
 /**
  *
- * @author tritiummonoid
+ * @author papermonoid
  */
-public interface IGestor {
+public interface ICampo {
     String getNombre();
-    List<IBaseDeDatos> getBasesDeDatos() throws Exception;
-    IBaseDeDatos getBaseDeDatos(String nombre) throws Exception;
+    String getTipo();
+    boolean llavePrimaria();
 }

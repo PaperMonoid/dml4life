@@ -5,15 +5,13 @@
  */
 package modelos.gestor.mysql;
 
-import modelos.gestor.mysql.TablaMysql;
 import modelos.gestor.generico.ITabla;
 import modelos.gestor.generico.IBaseDeDatos;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,31 +21,10 @@ public class BaseDeDatosMysql implements IBaseDeDatos {
 
     private Connection conexion;
     private String nombre;
-    private Map<String, ITabla> tablas;
     
-    public BaseDeDatosMysql(Connection conexion, String nombre) 
-            throws SQLException {
+    public BaseDeDatosMysql(Connection conexion, String nombre) {
         this.conexion = conexion;
         this.nombre = nombre;
-        this.tablas = new HashMap<>();
-
-        Statement comando;
-        ResultSet resultados;
-
-        comando = conexion.createStatement();
-        resultados = comando.executeQuery(String.format("USE %s", nombre));
-        resultados.close();
-        comando.close();
-
-        comando = conexion.createStatement();
-        resultados = comando.executeQuery("SHOW TABLES");
-        tablas = new HashMap<>();
-        while (resultados.next()) {
-            String tabla = resultados.getString(1);
-            this.tablas.put(tabla, new TablaMysql(conexion, nombre, tabla));
-        }
-        resultados.close();
-        comando.close();
     }
 
     @Override
@@ -56,7 +33,31 @@ public class BaseDeDatosMysql implements IBaseDeDatos {
     }
 
     @Override
-    public Map<String, ITabla> getTablas() {
-        return this.tablas;
+    public List<ITabla> getTablas() throws Exception {
+        Statement comando;
+        ResultSet resultados;
+        List<ITabla> tablas;
+
+        comando = conexion.createStatement();
+        resultados = comando.executeQuery(String.format("USE `%s`;", nombre));
+        resultados.close();
+        comando.close();
+
+        comando = conexion.createStatement();
+        resultados = comando.executeQuery("SHOW TABLES;");
+        tablas = new ArrayList<>();
+        while (resultados.next()) {
+            String tabla = resultados.getString(1);
+            tablas.add(new TablaMysql(conexion, nombre, tabla));
+        }
+        resultados.close();
+        comando.close();
+    
+        return tablas;
+    }
+
+    @Override
+    public ITabla getTabla(String nombre) throws Exception {
+        return new TablaMysql(conexion, this.nombre, nombre);
     }
 }
