@@ -37,12 +37,12 @@ public class TablaMysql implements ITabla {
     }
 
     @Override
-    public IInsersion insersion() {
+    public IInsersion insersion() throws Exception {
         return new InsersionMysql(conexion, baseDeDatos, nombre);
     }
-
+    
     @Override
-    public IConsulta consulta() {
+    public IConsulta consulta() throws Exception {
         return new ConsultaMysql(conexion, baseDeDatos, nombre);
     }
 

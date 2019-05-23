@@ -63,10 +63,11 @@ public class PrincipalPresentador {
         }
     }
 
-    public void ejecutarConsulta(String comando) {
+    public void ejecutar(String comando) {
         try {
             IConsulta consulta = this.tabla.consulta();
-            this.vista.cambioConsulta(consulta.consultar(comando));
+            consulta.setComando(comando);
+            this.vista.cambioConsulta(consulta.consultar());
         } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.consultaInvalida();

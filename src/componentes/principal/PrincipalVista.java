@@ -245,7 +245,7 @@ public class PrincipalVista extends javax.swing.JFrame
     }//GEN-LAST:event_itemConexionActionPerformed
 
     private void btnSqlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSqlActionPerformed
-        presentador.ejecutarConsulta(this.txtSql.getText());
+        presentador.ejecutar(txtSql.getText());
     }//GEN-LAST:event_btnSqlActionPerformed
 
     private void itemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSalirActionPerformed
@@ -295,16 +295,13 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
-    public void cambioTabla(String nombreBaseDeDatos, String nombreTabla, String consulta) {
-        nombreBaseDeDatos = new StringBuilder("[")
-                .append(nombreBaseDeDatos)
-                .append("]")
-                .toString();
-        lblBaseDeDatos.setText(nombreBaseDeDatos);
+    public void cambioTabla(String nombreBaseDeDatos, String nombreTabla, 
+            String consulta) {
+        lblBaseDeDatos.setText(String.format("[%s]", nombreBaseDeDatos));
         lblTabla.setText(nombreTabla);
         txtSql.setText(consulta);
         panelConsulta.setVisible(true);
-        presentador.ejecutarConsulta(txtSql.getText());
+        presentador.ejecutar(consulta);
     }
 
     @Override

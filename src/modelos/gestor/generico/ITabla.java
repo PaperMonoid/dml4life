@@ -16,6 +16,6 @@ public interface ITabla {
     List<ICampo> getCampos() throws Exception;
     ICampo getCampo(String nombre) throws Exception;
     List<ICampo> getLlavesPrimarias() throws Exception;
-    IInsersion insersion();
-    IConsulta consulta();
+    IInsersion insersion() throws Exception;
+    IConsulta consulta() throws Exception;
 }

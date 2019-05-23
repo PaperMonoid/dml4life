@@ -22,13 +22,21 @@ public class InsersionMysql implements IInsersion {
     private String tabla;
     private Map<String, String> campos;
 
-    public InsersionMysql(Connection conexion, String baseDeDatos, String tabla) {
+    public InsersionMysql(Connection conexion, String baseDeDatos, 
+            String tabla) {
         this.conexion = conexion;
         this.baseDeDatos = baseDeDatos;
         this.tabla = tabla;
         this.campos = new HashMap<>();
     }
 
+    public InsersionMysql(Connection conexion, String baseDeDatos, 
+            String tabla, String comando) {
+        this.conexion = conexion;
+        this.baseDeDatos = baseDeDatos;
+        this.tabla = tabla;
+        this.campos = new HashMap<>();
+    }
 
     @Override
     public IInsersion agregarCampo(String campo, String valor) {
