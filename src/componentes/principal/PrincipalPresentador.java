@@ -5,10 +5,12 @@
  */
 package componentes.principal;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import modelos.gestor.generico.IActualizacion;
 import modelos.gestor.generico.IBaseDeDatos;
 import modelos.gestor.generico.ICampo;
 import modelos.gestor.generico.IConsulta;
@@ -26,12 +28,14 @@ public class PrincipalPresentador {
     private IGestor gestor;
     private IBaseDeDatos baseDeDatos;
     private ITabla tabla;
+    private Map<Map<String, String>, Map<String, String>> cambios;
 
     public PrincipalPresentador(IPrincipalVista vista) {
         this.vista = vista;
     }
     
     public void setGestor(IGestor gestor) {
+        cambios = null;
         this.gestor = gestor;
         try {
             DefaultMutableTreeNode raiz = 
@@ -61,6 +65,23 @@ public class PrincipalPresentador {
             this.tabla = this.baseDeDatos.getTabla(tabla);
             IConsulta consulta = this.tabla.consulta();
             this.vista.cambioTabla(baseDeDatos, tabla, consulta.toString());
+            this.cambios = new HashMap<>();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            this.vista.consultaInvalida();
+        }
+    }
+    
+    public void registrarCambio(Map<String, String> registro) {
+        try {
+            List<ICampo> llavesPrimarias = tabla.getLlavesPrimarias();
+            Map<String, String> id = new HashMap<>();
+            for (ICampo llavePrimaria : llavesPrimarias) {
+                String nombre = llavePrimaria.getNombre();
+                String valor = registro.get(nombre);
+                id.put(nombre, valor);
+            }
+            cambios.put(id, registro);
         } catch (Exception exception) {
             exception.printStackTrace();
             this.vista.consultaInvalida();
@@ -79,11 +100,24 @@ public class PrincipalPresentador {
                 IConsulta consulta = tabla.consulta();
                 this.vista.cambioConsulta(consulta.toString());
                 this.vista.cambioResultado(consulta.consultar());
+                this.cambios = new HashMap<>();
+            } else if (comando.toLowerCase().contains("update")) {
+                IActualizacion actualizacion = tabla.actualizacion();
+                for (String subcomando : comando.split(";\n")) {
+                    actualizacion.setComando(subcomando);
+                    actualizacion.actualizar();
+                }
+                this.vista.actualizacionExitosa();
+                IConsulta consulta = tabla.consulta();
+                this.vista.cambioConsulta(consulta.toString());
+                this.vista.cambioResultado(consulta.consultar());
+                this.cambios = new HashMap<>();
             } else {
                 IConsulta consulta = tabla.consulta();
                 consulta.setComando(comando);
                 this.vista.cambioConsulta(consulta.toString());
                 this.vista.cambioResultado(consulta.consultar());
+                this.cambios = new HashMap<>();
             }
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -102,6 +136,25 @@ public class PrincipalPresentador {
                             registro.get(llavePrimaria.getNombre()));
                 }
                 comando.append(eliminacion.toString()).append(";\n");
+            }
+            this.vista.cambioConsulta(comando.toString());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            this.vista.consultaInvalida();
+        }
+    }
+
+    public void actualizar() {
+        try {
+            StringBuilder comando = new StringBuilder();
+            List<ICampo> campos = tabla.getCampos();
+            for (Map<String, String> registro : cambios.values()) {
+                IActualizacion actualizacion = tabla.actualizacion();
+                for (ICampo campo : campos) {
+                    actualizacion.agregarCampo(campo, 
+                            registro.get(campo.getNombre()));
+                }
+                comando.append(actualizacion.toString()).append(";\n");
             }
             this.vista.cambioConsulta(comando.toString());
         } catch (Exception exception) {

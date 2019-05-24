@@ -21,4 +21,5 @@ public interface IPrincipalVista {
     void consultaInvalida();
     void conexionFallida();
     void eliminacionExitosa();
+    void actualizacionExitosa();
 }

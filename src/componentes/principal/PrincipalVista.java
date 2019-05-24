@@ -15,6 +15,8 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
@@ -26,7 +28,7 @@ import javax.swing.tree.TreeSelectionModel;
  * @author tritiummonoid
  */
 public class PrincipalVista extends javax.swing.JFrame
-        implements IPrincipalVista {
+        implements IPrincipalVista, TableModelListener {
 
     private final PrincipalPresentador presentador;    
 
@@ -79,6 +81,7 @@ public class PrincipalVista extends javax.swing.JFrame
         itemSalir = new javax.swing.JMenuItem();
         menuEditar = new javax.swing.JMenu();
         itemInsertar = new javax.swing.JMenuItem();
+        itemActualizar = new javax.swing.JMenuItem();
         itemEliminar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -212,6 +215,14 @@ public class PrincipalVista extends javax.swing.JFrame
         });
         menuEditar.add(itemInsertar);
 
+        itemActualizar.setText("Actualizar");
+        itemActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemActualizarActionPerformed(evt);
+            }
+        });
+        menuEditar.add(itemActualizar);
+
         itemEliminar.setText("Eliminar");
         itemEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -266,27 +277,32 @@ public class PrincipalVista extends javax.swing.JFrame
     }//GEN-LAST:event_itemSalirActionPerformed
 
     private void itemInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemInsertarActionPerformed
-        //new InsersionVista().setVisible(true);
+        
     }//GEN-LAST:event_itemInsertarActionPerformed
 
     private void itemEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEliminarActionPerformed
         List<Map<String, String>> registros = new ArrayList<>();
-        TableModel modelo = tblConsulta.getModel();
+        TableModel tabla = tblConsulta.getModel();
         int[] filas = tblConsulta.getSelectedRows();
         for (int fila : filas) {
             Map<String, String> registro = new HashMap<>();
-            int columnas = modelo.getColumnCount();
+            int columnas = tabla.getColumnCount();
             for (int columna = 0; columna < columnas; columna++) {
-                registro.put(modelo.getColumnName(columna), 
-                        (String) modelo.getValueAt(fila, columna));
+                registro.put(tabla.getColumnName(columna), 
+                        (String) tabla.getValueAt(fila, columna));
             }
             registros.add(registro);
         }
         presentador.eliminar(registros);
     }//GEN-LAST:event_itemEliminarActionPerformed
 
+    private void itemActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemActualizarActionPerformed
+        presentador.actualizar();
+    }//GEN-LAST:event_itemActualizarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSql;
+    private javax.swing.JMenuItem itemActualizar;
     private javax.swing.JMenuItem itemConexion;
     private javax.swing.JMenuItem itemEliminar;
     private javax.swing.JMenuItem itemInsertar;
@@ -331,6 +347,12 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
+    public void actualizacionExitosa() {
+        JOptionPane.showMessageDialog(null, 
+                "Se actualizaron los registros correctamente.");
+    }
+
+    @Override
     public void cambioTabla(String nombreBaseDeDatos, String nombreTabla, 
             String consulta) {
         lblBaseDeDatos.setText(String.format("[%s]", nombreBaseDeDatos));
@@ -348,8 +370,22 @@ public class PrincipalVista extends javax.swing.JFrame
 
     @Override
     public void cambioResultado(TableModel tabla) {
+        tabla.addTableModelListener(this);
         tblConsulta.setModel(tabla);
         panelConsulta.setVisible(true);
+    }
+    
+    @Override
+    public void tableChanged(TableModelEvent evento) {
+        TableModel tabla = tblConsulta.getModel();
+        int fila = evento.getFirstRow();
+        Map<String, String> registro = new HashMap<>();
+        int columnas = tabla.getColumnCount();
+        for (int columna = 0; columna < columnas; columna++) {
+            registro.put(tabla.getColumnName(columna), 
+                    (String) tabla.getValueAt(fila, columna));
+        }
+        presentador.registrarCambio(registro);
     }
 
 }

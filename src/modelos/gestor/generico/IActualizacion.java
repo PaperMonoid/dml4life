@@ -12,5 +12,5 @@ package modelos.gestor.generico;
 public interface IActualizacion {
     IActualizacion agregarCampo(ICampo campo, String valor);
     void setComando(String comando);
-    void insertar() throws Exception;
+    void actualizar() throws Exception;
 }

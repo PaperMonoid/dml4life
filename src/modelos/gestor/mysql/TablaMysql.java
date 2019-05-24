@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import modelos.gestor.generico.IActualizacion;
 import modelos.gestor.generico.ICampo;
 import modelos.gestor.generico.IEliminacion;
 
@@ -43,6 +44,11 @@ public class TablaMysql implements ITabla {
     }
 
     @Override
+    public IActualizacion actualizacion() throws Exception {
+        return new ActualizacionMysql(conexion, baseDeDatos, nombre);
+    }
+
+    @Override
     public IEliminacion eliminacion() throws Exception {
         return new EliminacionMysql(conexion, baseDeDatos, nombre);
     }
@@ -53,7 +59,7 @@ public class TablaMysql implements ITabla {
     }
 
     @Override
-    public List<ICampo> getCampos() throws Exception {
+    public List<ICampo> getCampos() throws Exception { // todo cache
         List<ICampo> campos;
         Statement comando;
         ResultSet resultados;
