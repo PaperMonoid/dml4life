@@ -60,7 +60,6 @@ public class ActualizacionMysql implements IActualizacion {
                 ICampo campo = iterador.next();
                 String nombre = campo.getNombre();
                 String valor = campos.get(campo);
-                String expresion;
                 if (campo.getTipo().contains("int") || valor == null) {
                     actualizaciones.append(String.format("`%s` = %s", 
                             nombre, valor));

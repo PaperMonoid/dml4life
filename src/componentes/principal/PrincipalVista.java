@@ -6,7 +6,6 @@
 package componentes.principal;
 
 import componentes.conector.ConectorVista;
-import componentes.insersion.InsersionVista;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
@@ -40,6 +40,8 @@ public class PrincipalVista extends javax.swing.JFrame
         this.presentador = new PrincipalPresentador(this);
         panelConexion.setVisible(false);
         panelConsulta.setVisible(false);
+        menuEditar.setEnabled(false);
+        itemInsertar.setEnabled(false);
         
         DefaultTreeCellRenderer renderer;
         renderer = (DefaultTreeCellRenderer) treeBasesDeDatos.getCellRenderer();
@@ -75,11 +77,12 @@ public class PrincipalVista extends javax.swing.JFrame
         btnSql = new javax.swing.JButton();
         scrollConsulta = new javax.swing.JScrollPane();
         tblConsulta = new javax.swing.JTable();
-        menubar = new javax.swing.JMenuBar();
+        Nuevo = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         itemConexion = new javax.swing.JMenuItem();
         itemSalir = new javax.swing.JMenuItem();
         menuEditar = new javax.swing.JMenu();
+        itemNuevo = new javax.swing.JMenuItem();
         itemInsertar = new javax.swing.JMenuItem();
         itemActualizar = new javax.swing.JMenuItem();
         itemEliminar = new javax.swing.JMenuItem();
@@ -203,9 +206,17 @@ public class PrincipalVista extends javax.swing.JFrame
         });
         menuArchivo.add(itemSalir);
 
-        menubar.add(menuArchivo);
+        Nuevo.add(menuArchivo);
 
         menuEditar.setText("Editar");
+
+        itemNuevo.setText("Nuevo");
+        itemNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemNuevoActionPerformed(evt);
+            }
+        });
+        menuEditar.add(itemNuevo);
 
         itemInsertar.setText("Insertar");
         itemInsertar.addActionListener(new java.awt.event.ActionListener() {
@@ -231,9 +242,9 @@ public class PrincipalVista extends javax.swing.JFrame
         });
         menuEditar.add(itemEliminar);
 
-        menubar.add(menuEditar);
+        Nuevo.add(menuEditar);
 
-        setJMenuBar(menubar);
+        setJMenuBar(Nuevo);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -277,7 +288,7 @@ public class PrincipalVista extends javax.swing.JFrame
     }//GEN-LAST:event_itemSalirActionPerformed
 
     private void itemInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemInsertarActionPerformed
-        
+        presentador.insertar();
     }//GEN-LAST:event_itemInsertarActionPerformed
 
     private void itemEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEliminarActionPerformed
@@ -300,19 +311,33 @@ public class PrincipalVista extends javax.swing.JFrame
         presentador.actualizar();
     }//GEN-LAST:event_itemActualizarActionPerformed
 
+    private void itemNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNuevoActionPerformed
+        DefaultTableModel viejaTabla = 
+                (DefaultTableModel) tblConsulta.getModel();                                     
+        DefaultTableModel nuevaTabla = new DefaultTableModel();
+        for (int i = 0; i < viejaTabla.getColumnCount(); i++) {
+            nuevaTabla.addColumn(viejaTabla.getColumnName(i));
+        }
+        nuevaTabla.addRow(new String[] {});
+        nuevaTabla.addTableModelListener(this);
+        itemInsertar.setEnabled(true);
+        tblConsulta.setModel(nuevaTabla);
+    }//GEN-LAST:event_itemNuevoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar Nuevo;
     private javax.swing.JButton btnSql;
     private javax.swing.JMenuItem itemActualizar;
     private javax.swing.JMenuItem itemConexion;
     private javax.swing.JMenuItem itemEliminar;
     private javax.swing.JMenuItem itemInsertar;
+    private javax.swing.JMenuItem itemNuevo;
     private javax.swing.JMenuItem itemSalir;
     private javax.swing.JLabel lblBaseDeDatos;
     private javax.swing.JLabel lblSql;
     private javax.swing.JLabel lblTabla;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuEditar;
-    private javax.swing.JMenuBar menubar;
     private javax.swing.JPanel panelConexion;
     private javax.swing.JPanel panelConsulta;
     private javax.swing.JScrollPane scrollBasesDeDatos;
@@ -353,12 +378,20 @@ public class PrincipalVista extends javax.swing.JFrame
     }
 
     @Override
+    public void insersionExitosa() {
+        JOptionPane.showMessageDialog(null, 
+                "Se insertaron los registros correctamente.");
+    }
+
+    @Override
     public void cambioTabla(String nombreBaseDeDatos, String nombreTabla, 
             String consulta) {
         lblBaseDeDatos.setText(String.format("[%s]", nombreBaseDeDatos));
         lblTabla.setText(nombreTabla);
         txtSql.setText(consulta);
         panelConsulta.setVisible(true);
+        menuEditar.setEnabled(true);
+        itemInsertar.setEnabled(false);
         presentador.ejecutar(consulta);
     }
 
@@ -370,6 +403,7 @@ public class PrincipalVista extends javax.swing.JFrame
 
     @Override
     public void cambioResultado(TableModel tabla) {
+        itemInsertar.setEnabled(false);
         tabla.addTableModelListener(this);
         tblConsulta.setModel(tabla);
         panelConsulta.setVisible(true);

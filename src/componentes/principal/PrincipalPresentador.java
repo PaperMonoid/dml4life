@@ -16,6 +16,7 @@ import modelos.gestor.generico.ICampo;
 import modelos.gestor.generico.IConsulta;
 import modelos.gestor.generico.IEliminacion;
 import modelos.gestor.generico.IGestor;
+import modelos.gestor.generico.IInsersion;
 import modelos.gestor.generico.ITabla;
 
 /**
@@ -90,7 +91,7 @@ public class PrincipalPresentador {
 
     public void ejecutar(String comando) {
         try {
-            if (comando.toLowerCase().contains("delete")) {
+            if (comando.toLowerCase().startsWith("delete")) {
                 IEliminacion eliminacion = tabla.eliminacion();
                 for (String subcomando : comando.split(";\n")) {
                     eliminacion.setComando(subcomando);
@@ -101,13 +102,24 @@ public class PrincipalPresentador {
                 this.vista.cambioConsulta(consulta.toString());
                 this.vista.cambioResultado(consulta.consultar());
                 this.cambios = new HashMap<>();
-            } else if (comando.toLowerCase().contains("update")) {
+            } else if (comando.toLowerCase().startsWith("update")) {
                 IActualizacion actualizacion = tabla.actualizacion();
                 for (String subcomando : comando.split(";\n")) {
                     actualizacion.setComando(subcomando);
                     actualizacion.actualizar();
                 }
                 this.vista.actualizacionExitosa();
+                IConsulta consulta = tabla.consulta();
+                this.vista.cambioConsulta(consulta.toString());
+                this.vista.cambioResultado(consulta.consultar());
+                this.cambios = new HashMap<>();
+            } else if (comando.toLowerCase().startsWith("insert")) {
+                IInsersion insersion = tabla.insersion();
+                for (String subcomando : comando.split(";\n")) {
+                    insersion.setComando(subcomando);
+                    insersion.insertar();
+                }
+                this.vista.insersionExitosa();
                 IConsulta consulta = tabla.consulta();
                 this.vista.cambioConsulta(consulta.toString());
                 this.vista.cambioResultado(consulta.consultar());
@@ -155,6 +167,25 @@ public class PrincipalPresentador {
                             registro.get(campo.getNombre()));
                 }
                 comando.append(actualizacion.toString()).append(";\n");
+            }
+            this.vista.cambioConsulta(comando.toString());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            this.vista.consultaInvalida();
+        }
+    }
+
+    public void insertar() {
+        try {
+            StringBuilder comando = new StringBuilder();
+            List<ICampo> campos = tabla.getCampos();
+            for (Map<String, String> registro : cambios.values()) {
+                IInsersion insersion = tabla.insersion();
+                for (ICampo campo : campos) {
+                    insersion.agregarCampo(campo, 
+                            registro.get(campo.getNombre()));
+                }
+                comando.append(insersion.toString()).append(";\n");
             }
             this.vista.cambioConsulta(comando.toString());
         } catch (Exception exception) {

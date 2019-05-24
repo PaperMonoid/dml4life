@@ -7,7 +7,7 @@ package modelos.gestor.mysql;
 
 import modelos.gestor.generico.IInsersion;
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,27 +38,31 @@ public class InsersionMysql implements IInsersion {
         if (this.comando != null) {
             return this.comando;
         }
-        StringBuilder builder;
-        Iterator<Map.Entry<ICampo, String>> iterador;
-        builder = new StringBuilder("");
+        StringBuilder camposInsertar, camposValores;
+        Iterator<ICampo> iterador;
+        camposInsertar = new StringBuilder();
+        camposValores = new StringBuilder();
         if (!campos.isEmpty()) {
-            builder.append(String.format("INSERT INTO `%s`() VALUES(`%s`)", tabla));
-            iterador = campos.entrySet().iterator();
+            iterador = campos.keySet().iterator();
             while (iterador.hasNext()) {
-                Map.Entry<ICampo, String> campo = iterador.next();
-                String nombre = campo.getKey().getNombre();
-                String valor = campo.getValue();
-                if (campo.getKey().getTipo().contains("int")) {
-                    builder.append(String.format("`%s` = %s", nombre, valor));
+                ICampo campo = iterador.next();
+                String nombre = campo.getNombre();
+                String valor = campos.get(campo);
+                camposInsertar.append(String.format("`%s`", nombre));
+                if (campo.getTipo().contains("int") || valor == null) {
+                    camposValores.append(String.format("%s", valor));
                 } else {
-                    builder.append(String.format("`%s` = '%s'", nombre, valor));
+                    camposValores.append(String.format("'%s'", valor));
                 }
                 if (iterador.hasNext()) {
-                    builder.append(" AND ");
+                    camposInsertar.append(", ");
+                    camposValores.append(", ");
                 }
             }
+            return String.format("INSERT INTO `%s`(%s) VALUES(%s)", tabla, 
+                    camposInsertar, camposValores);
         }
-        return builder.toString();
+        return "";
     }
 
     @Override
@@ -69,6 +73,15 @@ public class InsersionMysql implements IInsersion {
 
     @Override
     public void insertar() throws Exception {
+        Statement comando;
+        
+        comando = conexion.createStatement();
+        comando.execute(String.format("USE %s", baseDeDatos));
+        comando.close();
+
+        comando = conexion.createStatement();
+        comando.execute(toString());
+        comando.close();
     }
 
     @Override
